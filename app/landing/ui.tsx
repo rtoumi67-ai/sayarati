@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
 import {
   ArrowLeft,
@@ -143,11 +144,16 @@ function SectionHeader({
 function GlassCard({
   children,
   className = "",
+  ...props
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
-}) {
-  return <div className={["card", className].join(" ")}>{children}</div>;
+} & HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props} className={["card", className, props.className].filter(Boolean).join(" ")}>
+      {children}
+    </div>
+  );
 }
 
 function statusLabel(status: string) {
