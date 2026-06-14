@@ -17,7 +17,13 @@ const WhatsAppFloating = dynamic(() => import("./WhatsAppFloating"), {
 });
 
 function isMarketingPath(pathname: string | null) {
-  return pathname === "/" || pathname === "/landing";
+  if (!pathname) return false;
+  return (
+    pathname === "/" ||
+    pathname === "/landing" ||
+    pathname === "/choose-role" ||
+    pathname.startsWith("/auth/")
+  );
 }
 
 export default function AppChrome() {
