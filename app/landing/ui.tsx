@@ -5,14 +5,11 @@ import type { HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
 import {
   ArrowLeft,
-  CalendarDays,
-  CarFront,
   CheckCircle2,
   ClipboardList,
   Droplets,
   Gauge,
   MapPin,
-  Package,
   ShoppingBag,
   Sparkles,
   Star,
@@ -22,7 +19,6 @@ import {
 
 const heroVehicle = "/assets/doblo.jpg";
 const logoSrc = "/favicon.ico";
-const goldAccent = "#C9A84C";
 
 const vehicleCatalog = {
   BMW: ["X5", "320i", "M4"],
@@ -230,20 +226,6 @@ export default function LandingUI() {
                     <div className="font-display text-xl font-black">سيارتي</div>
                     <div className="text-[11px] tracking-[0.36em] text-primary/80 uppercase">SAYARATI</div>
                   </div>
-                </div>
-                <div className="hidden items-center gap-3 text-sm text-muted md:flex">
-                  <a href="#roles" className="transition hover:text-foreground">
-                    اختر نوع الحساب
-                  </a>
-                  <a href="#oil" className="transition hover:text-foreground">
-                    توصيات الزيوت
-                  </a>
-                  <a href="#mechanics" className="transition hover:text-foreground">
-                    الميكانيكيون
-                  </a>
-                  <a href="#dashboard" className="transition hover:text-foreground">
-                    لوحة الميكانيكي
-                  </a>
                 </div>
               </div>
             </GlassCard>
@@ -812,66 +794,6 @@ export default function LandingUI() {
                   </div>
                 </div>
               )}
-            </div>
-          </section>
-
-          <section className="border-t border-border/70 pb-20 pt-16 sm:pb-24">
-            <div className="container-app">
-              <GlassCard className="overflow-hidden p-6 sm:p-8">
-                <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-                  <div className="space-y-4">
-                    <div
-                      className="inline-flex rounded-full border px-4 py-2 text-xs font-bold tracking-[0.28em] uppercase"
-                      style={{
-                        borderColor: "rgba(201,168,76,0.2)",
-                        color: goldAccent,
-                        backgroundColor: "rgba(201,168,76,0.08)",
-                      }}
-                    >
-                      Tesla-style Premium UI
-                    </div>
-                    <h3 className="text-3xl font-black text-foreground">
-                      تصميم SaaS سيارات فاخر بواجهة عربية RTL
-                    </h3>
-                    <p className="text-sm leading-8 text-muted">
-                      الصفحة تعمل الآن كمدخل موحد لمنصة سيارتي مع هيرو بصري جديد وصورة المركبة من
-                      مجلد الأصول، ثم تجربة مفصولة بدورين فقط: Client وMechanic.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-4 md:grid-cols-3">
-                    {[
-                      {
-                        title: "Vehicle Intelligence",
-                        text: "اختيار المركبة يولد التوصية المناسبة بالزيت مباشرة.",
-                        icon: CarFront,
-                      },
-                      {
-                        title: "Visual Store",
-                        text: "كل عنصر في المتجر يظهر كبطاقة منتج بصري مع صورة.",
-                        icon: Package,
-                      },
-                      {
-                        title: "Service Control",
-                        text: "لوحة الميكانيكي تجمع الطلبات والحالات والعملاء في مكان واحد.",
-                        icon: CalendarDays,
-                      },
-                    ].map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <div
-                          key={item.title}
-                          className="rounded-[28px] border border-border/80 bg-black/20 p-5"
-                        >
-                          <Icon className="h-6 w-6 text-primary" aria-hidden />
-                          <div className="mt-4 text-lg font-black text-foreground">{item.title}</div>
-                          <div className="mt-2 text-sm leading-7 text-muted">{item.text}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </GlassCard>
             </div>
           </section>
         </main>
