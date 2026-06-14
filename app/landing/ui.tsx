@@ -1,118 +1,162 @@
-"use client";
-
-import { useMemo, useState } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowLeft,
+  ArrowUpLeft,
+  BadgeCheck,
+  CalendarCheck,
   CheckCircle2,
   ClipboardList,
   Droplets,
   Gauge,
-  MapPin,
-  ShoppingBag,
+  Package,
+  ShieldCheck,
   Sparkles,
   Star,
-  UserCircle2,
-  Wrench,
 } from "lucide-react";
+
+import { SITE } from "../components/site";
 
 const heroVehicle = "/assets/doblo.jpg";
 const logoSrc = "/favicon.ico";
 
-const vehicleCatalog = {
-  BMW: ["X5", "320i", "M4"],
-  Audi: ["A6", "Q5", "A4"],
-  Mercedes: ["C200", "E300", "GLE 450"],
-  Toyota: ["Camry", "Corolla", "RAV4"],
-  Hyundai: ["Sonata", "Elantra", "Tucson"],
-} as const;
+const trustBadges = [
+  "سجل صيانة رقمي",
+  "توصيات زيوت دقيقة",
+  "ميكانيكيون موثوقون",
+  "سوق قطع غيار متكامل",
+];
 
-const engineOptions = ["بنزين", "ديزل", "هايبرد"] as const;
-
-const storeProducts = [
+const features = [
   {
-    category: "زيوت محركات",
-    title: "مجموعة زيوت أوروبية معتمدة",
-    subtitle: "تشمل 5W30 و5W40 للمحركات الحديثة",
-    image:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=luxury%20automotive%20engine%20oil%20bottles%20displayed%20on%20a%20premium%20dark%20glass%20shelf%2C%20gold%20accent%20lighting%2C%20high-end%20saas%20product%20photography%2C%20realistic%2C%20clean%20studio%20background&image_size=landscape_4_3",
+    title: "سجل الصيانة",
+    description: "كل الخدمات والفواتير والتنبيهات محفوظة داخل ملف رقمي واضح وسهل الرجوع إليه.",
+    icon: ClipboardList,
   },
   {
-    category: "قطع غيار",
-    title: "قطع أصلية وفلاتر عالية الاعتمادية",
-    subtitle: "فلاتر زيت وهواء وفرامل ضمن بطاقات شراء واضحة",
-    image:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20automotive%20spare%20parts%20layout%20with%20filters%2C%20brake%20pads%2C%20and%20performance%20components%20on%20dark%20reflective%20surface%2C%20cinematic%20gold%20rim%20light%2C%20luxury%20ecommerce%20product%20photography&image_size=landscape_4_3",
+    title: "توصيات الزيوت",
+    description: "اقتراحات دقيقة حسب العلامة التجارية والمحرك وطبيعة الاستخدام الفعلي.",
+    icon: Droplets,
   },
   {
-    category: "خدمات",
-    title: "باقات صيانة وتشخيص وخدمة دورية",
-    subtitle: "خدمة تغيير زيت وتشخيص وصيانة مجدولة داخل متجر موحد",
-    image:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20automotive%20service%20bay%20with%20mechanic%20tools%2C%20diagnostic%20tablet%2C%20sleek%20dark%20garage%20interior%2C%20gold%20highlights%2C%20luxury%20startup%20visual%2C%20realistic&image_size=landscape_4_3",
+    title: "ملف المركبة الذكي",
+    description: "صورة تشغيلية موحدة للمركبة تشمل الحالة الحالية والخدمات القادمة والقطع المناسبة.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "تشخيص الأعطال",
+    description: "فهم أوضح للأعراض والأعطال قبل الذهاب للورشة مع تنبيهات تساعد على القرار.",
+    icon: Gauge,
+  },
+  {
+    title: "حجز الميكانيكيين",
+    description: "اختيار الفني المناسب، تحديد الموعد، ومتابعة حالة الخدمة من نفس المنصة.",
+    icon: CalendarCheck,
+  },
+  {
+    title: "سوق قطع الغيار",
+    description: "اكتشف الزيوت والقطع والخدمات ضمن بطاقات شراء مرتبة ومرئية وواضحة.",
+    icon: Package,
+  },
+  {
+    title: "غسل وتلميع",
+    description: "خيارات عناية وتنظيف وتلميع ضمن تجربة فاخرة تحافظ على قيمة المركبة ومظهرها.",
+    icon: Sparkles,
   },
 ];
 
-const mechanics = [
+const oilProducts = [
   {
-    name: "م. ياسين قندوز",
-    location: "عنابة، حي الصفصاف",
-    rating: 4.9,
-    services: ["تغيير زيت", "تشخيص أعطال", "صيانة دورية"],
+    brand: "Liqui Moly",
+    productName: "Top Tec 4200",
+    viscosity: "5W30",
     image:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=professional%20arab%20mechanic%20portrait%20inside%20a%20premium%20dark%20garage%2C%20wearing%20clean%20black%20uniform%2C%20gold%20accent%20lighting%2C%20high-end%20automotive%20service%20brand%20photography&image_size=square_hd",
+      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=luxury%20engine%20oil%20bottle%20product%20photography%2C%20premium%20automotive%20saas%20store%2C%20dark%20studio%20background%2C%20gold%20accent%20lighting%2C%20realistic%2C%20high-end%20ecommerce%20shot&image_size=portrait_4_3",
   },
   {
-    name: "م. سفيان بوحفص",
-    location: "قسنطينة، زواغي",
-    rating: 4.8,
-    services: ["صيانة دورية", "فحص كمبيوتر", "تبديل فلاتر"],
+    brand: "Motul",
+    productName: "8100 X-clean",
+    viscosity: "5W40",
     image:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=experienced%20north%20african%20mechanic%20with%20diagnostic%20tablet%20in%20a%20luxury%20service%20garage%2C%20dark%20premium%20interior%2C%20gold%20light%20accents%2C%20realistic%20editorial%20portrait&image_size=square_hd",
+      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20motor%20oil%20container%20for%20performance%20cars%2C%20dark%20glass%20surface%2C%20cinematic%20gold%20rim%20light%2C%20luxury%20automotive%20product%20shot%2C%20realistic&image_size=portrait_4_3",
   },
   {
-    name: "م. أمين زغدود",
-    location: "الطارف، وسط المدينة",
-    rating: 4.7,
-    services: ["تغيير زيت", "صيانة وقائية", "فحص أعطال"],
+    brand: "TotalEnergies",
+    productName: "Quartz 9000",
+    viscosity: "5W30",
     image:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=confident%20automotive%20technician%20in%20a%20tesla-style%20premium%20garage%2C%20dark%20metallic%20background%2C%20subtle%20gold%20glow%2C%20realistic%20luxury%20service%20portrait&image_size=square_hd",
+      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high-end%20engine%20oil%20bottle%20on%20premium%20dark%20background%2C%20automotive%20luxury%20catalog%20photography%2C%20subtle%20gold%20glow%2C%20realistic%20studio%20lighting&image_size=portrait_4_3",
   },
 ];
 
-const mechanicRequests = [
+const steps = [
   {
-    carType: "BMW X5",
-    requestedService: "تغيير زيت وفحص شامل",
-    status: "pending",
+    number: "01",
+    title: "أضف سيارتك",
+    description: "أنشئ ملف المركبة بإدخال بياناتها الأساسية لتصبح كل التوصيات والخدمات مبنية على واقع سيارتك.",
   },
   {
-    carType: "Toyota Camry",
-    requestedService: "صيانة دورية 10,000 كم",
-    status: "accepted",
+    number: "02",
+    title: "احصل على توصيات وخدمات مناسبة",
+    description: "اكتشف الزيوت والقطع والخدمات والميكانيكيين المناسبين في واجهة واحدة مرتبة وواضحة.",
   },
   {
-    carType: "Mercedes E300",
-    requestedService: "تشخيص لمبة المحرك",
-    status: "completed",
-  },
-  {
-    carType: "Hyundai Tucson",
-    requestedService: "تبديل فلاتر وزيت",
-    status: "pending",
+    number: "03",
+    title: "تابع الصيانة من مكان واحد",
+    description: "راقب تاريخ الخدمات والتنبيهات والحجوزات من لوحة متابعة عربية مصممة بعناية.",
   },
 ];
 
-const mechanicClients = [
-  { name: "أحمد بن عيسى", car: "Audi A6", lastVisit: "قبل يومين" },
-  { name: "سميرة بوحفص", car: "Toyota RAV4", lastVisit: "اليوم" },
-  { name: "رياض قاسمي", car: "Mercedes C200", lastVisit: "قبل أسبوع" },
+const benefits = [
+  {
+    value: "وفر وقتك",
+    title: "توفير الوقت",
+    description: "كل ما تحتاجه لسيارتك مجمع في رحلة واحدة بدل التنقل بين تطبيقات وورش متعددة.",
+  },
+  {
+    value: "وضوح أعلى",
+    title: "قرارات صيانة أوضح",
+    description: "المعلومات الصحيحة تظهر في الوقت المناسب لتعرف ماذا تحتاج سيارتك ولماذا.",
+  },
+  {
+    value: "متابعة دقيقة",
+    title: "متابعة دقيقة للمركبة",
+    description: "ملف صيانة حي يربط بين الزيوت والخدمات والتشخيص والحجوزات.",
+  },
+  {
+    value: "شبكة موثوقة",
+    title: "الوصول إلى خدمات موثوقة",
+    description: "ورش وميكانيكيون وخدمات مختارة ضمن تجربة شراء وعناية أكثر احترافية.",
+  },
 ];
 
-type Role = "client" | "mechanic";
-type Brand = keyof typeof vehicleCatalog;
-type EngineType = (typeof engineOptions)[number];
+const testimonials = [
+  {
+    name: "أمينة بوبكر",
+    role: "مالكة BMW X3",
+    quote:
+      "الواجهة راقية وسهلة، لكن الأهم أنها فعلاً جعلتني أفهم ما تحتاجه سيارتي قبل ما تتحول الصيانة إلى تكلفة مفاجئة.",
+    image:
+      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=cinematic%20portrait%20of%20an%20elegant%20north%20african%20woman%20car%20owner%2C%20premium%20automotive%20brand%20campaign%2C%20dark%20studio%20background%2C%20gold%20accent%20lighting%2C%20realistic&image_size=square_hd",
+  },
+  {
+    name: "حسام بن رابح",
+    role: "يعتمد على الصيانة الوقائية",
+    quote:
+      "أكثر شيء أعجبني هو وضوح رحلة القرار: من الزيت المناسب إلى الحجز والمتابعة، كل شيء منطقي وسريع.",
+    image:
+      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=professional%20north%20african%20man%20driver%20portrait%2C%20luxury%20garage%20campaign%2C%20automotive%20technology%20atmosphere%2C%20dark%20premium%20lighting%2C%20realistic&image_size=square_hd",
+  },
+  {
+    name: "سارة قاسمي",
+    role: "تدير أكثر من مركبة للعائلة",
+    quote:
+      "سيارتي منحتني فعلاً منصة واحدة لكل شيء: سجل الصيانة، الزيت، الخدمات، وقطع الغيار بدون فوضى.",
+    image:
+      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=realistic%20portrait%20of%20a%20stylish%20arab%20female%20car%20owner%20in%20a%20premium%20automotive%20studio%2C%20graphite%20background%2C%20subtle%20gold%20glow%2C%20luxury%20editorial%20look&image_size=square_hd",
+  },
+];
 
 function SectionHeader({
   eyebrow,
@@ -125,7 +169,7 @@ function SectionHeader({
 }) {
   return (
     <div className="mx-auto max-w-3xl text-center">
-      <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-[11px] font-bold tracking-[0.32em] text-primary uppercase">
+      <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-[11px] font-bold tracking-[0.3em] text-primary uppercase">
         <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_18px_var(--glow-primary)]" />
         {eyebrow}
       </div>
@@ -152,66 +196,15 @@ function GlassCard({
   );
 }
 
-function statusLabel(status: string) {
-  if (status === "pending") return "pending";
-  if (status === "accepted") return "accepted";
-  return "completed";
-}
-
-function statusTone(status: string) {
-  if (status === "pending") return "border-amber-400/30 bg-amber-400/10 text-amber-200";
-  if (status === "accepted") return "border-sky-400/30 bg-sky-400/10 text-sky-200";
-  return "border-emerald-400/30 bg-emerald-400/10 text-emerald-200";
-}
-
 export default function LandingUI() {
-  const [activeRole, setActiveRole] = useState<Role>("client");
-  const [selectedBrand, setSelectedBrand] = useState<Brand>("BMW");
-  const [selectedModel, setSelectedModel] = useState<string>(vehicleCatalog.BMW[0]);
-  const [selectedEngine, setSelectedEngine] = useState<EngineType>("بنزين");
-  const [storeOpen, setStoreOpen] = useState(false);
-
-  const recommendedOils = useMemo(() => {
-    const viscosities =
-      selectedEngine === "ديزل"
-        ? ["5W40"]
-        : ["BMW", "Audi", "Mercedes"].includes(selectedBrand)
-          ? ["5W30", "5W40"]
-          : ["Toyota", "Hyundai"].includes(selectedBrand)
-            ? ["5W30"]
-            : ["5W30"];
-
-    return viscosities.map((viscosity, index) => ({
-      brand:
-        selectedBrand === "BMW" || selectedBrand === "Audi" || selectedBrand === "Mercedes"
-          ? "Liqui Moly"
-          : "TotalEnergies",
-      productName:
-        selectedEngine === "ديزل"
-          ? `${selectedBrand} Diesel Protection`
-          : `${selectedBrand} Premium Engine Oil`,
-      viscosity,
-      image:
-        index % 2 === 0
-          ? "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20engine%20oil%20bottle%20for%20luxury%20car%20maintenance%2C%20dark%20automotive%20saas%20product%20shot%2C%20gold%20accents%2C%20realistic%2C%20clean%20glass%20surface&image_size=portrait_4_3"
-          : "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high-end%20motor%20oil%20product%20photography%20for%20automotive%20store%2C%20premium%20dark%20background%2C%20cinematic%20gold%20light%2C%20realistic&image_size=portrait_4_3",
-    }));
-  }, [selectedBrand, selectedEngine]);
-
-  const dashboardStats = [
-    { label: "Incoming service requests", value: "18", icon: ClipboardList },
-    { label: "Oil change jobs", value: "07", icon: Droplets },
-    { label: "Maintenance requests", value: "11", icon: Wrench },
-    { label: "Client list", value: "56", icon: UserCircle2 },
-  ];
-
   return (
     <div className="dark" dir="rtl">
       <div className="relative overflow-hidden bg-background text-foreground">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_8%,rgba(201,168,76,0.18),transparent_20%),radial-gradient(circle_at_82%_14%,rgba(201,168,76,0.16),transparent_18%),linear-gradient(180deg,#040506_0%,#090b0e_48%,#050608_100%)]" />
-          <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(201,168,76,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.05)_1px,transparent_1px)] [background-size:120px_120px]" />
-          <div className="absolute inset-x-[22%] top-0 h-56 rounded-full bg-primary/18 blur-[110px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_12%,rgba(201,168,76,0.18),transparent_18%),radial-gradient(circle_at_82%_10%,rgba(201,168,76,0.12),transparent_20%),linear-gradient(180deg,#020304_0%,#06080b_44%,#050608_100%)]" />
+          <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(201,168,76,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.05)_1px,transparent_1px)] [background-size:118px_118px]" />
+          <div className="absolute left-[8%] top-0 h-72 w-72 rounded-full bg-primary/12 blur-[150px]" />
+          <div className="absolute right-[10%] top-[18%] h-72 w-72 rounded-full bg-primary/10 blur-[170px]" />
         </div>
 
         <header className="relative z-20">
@@ -223,9 +216,18 @@ export default function LandingUI() {
                     <Image src={logoSrc} alt="Sayarati" width={28} height={28} className="h-7 w-7" />
                   </div>
                   <div>
-                    <div className="font-display text-xl font-black">سيارتي</div>
-                    <div className="text-[11px] tracking-[0.36em] text-primary/80 uppercase">SAYARATI</div>
+                    <div className="font-display text-xl font-black text-foreground">سيارتي</div>
+                    <div className="text-[11px] tracking-[0.34em] text-primary/80 uppercase">
+                      Automotive Technology Platform
+                    </div>
                   </div>
+                </div>
+
+                <div className="hidden items-center gap-3 lg:flex">
+                  <Link href="/choose-role" className="btn-primary h-11 px-6 text-sm">
+                    ابدأ الآن
+                    <ArrowLeft className="h-4 w-4" aria-hidden />
+                  </Link>
                 </div>
               </div>
             </GlassCard>
@@ -233,158 +235,113 @@ export default function LandingUI() {
         </header>
 
         <main className="relative z-10">
-          <section className="container-app grid min-h-[calc(100svh-96px)] items-center gap-10 pb-16 pt-10 lg:grid-cols-[0.94fr_minmax(0,1.06fr)] lg:pb-24">
+          <section className="container-app grid min-h-[calc(100svh-88px)] items-center gap-14 pb-20 pt-12 lg:grid-cols-[0.9fr_1.1fr] lg:pb-28">
             <div className="order-2 space-y-8 lg:order-1">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.3em] text-primary uppercase">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.28em] text-primary uppercase">
                 <Sparkles className="h-4 w-4" aria-hidden />
-                Premium Automotive SaaS
+                Tesla Simplicity, Porsche Elegance
               </div>
 
               <div className="space-y-5">
-                <h1 className="max-w-3xl font-display text-4xl font-black leading-[1.02] sm:text-6xl lg:text-[4.65rem]">
+                <h1 className="max-w-3xl font-display text-4xl font-black leading-[1.02] text-foreground sm:text-6xl lg:text-[4.8rem]">
                   قرارات صيانة أفضل تبدأ بمعلومات أوضح.
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-muted sm:text-xl sm:leading-10">
                   من سجل الصيانة وتوصيات الزيوت المناسبة إلى تشخيص الأعطال وحجز الخدمات، تمنحك
-                  سيارتي رؤية أوضح وتحكماً أكبر في كل ما يخص سيارتك، لتتخذ قرارات صيانة أكثر ذكاءً
-                  وتجنب التكاليف غير المتوقعة.
+                  سيارتي رؤية أوضح وتحكماً أكبر في كل ما يخص سيارتك، لتتخذ قرارات صيانة أكثر
+                  ذكاءً وتجنب التكاليف غير المتوقعة.
                 </p>
               </div>
 
               <div className="flex flex-col gap-4 sm:flex-row">
-                <a href="#roles" className="btn-primary h-14 px-8 text-base">
+                <Link href="/choose-role" className="btn-primary h-14 px-8 text-base">
                   ابدأ الآن
                   <ArrowLeft className="h-5 w-5" aria-hidden />
-                </a>
-                <a href="#oil" className="btn-secondary h-14 px-8 text-base">
+                </Link>
+                <a href="#oils" className="btn-secondary h-14 px-8 text-base">
                   اعرف الزيت المناسب لسيارتك
-                  <ArrowLeft className="h-5 w-5" aria-hidden />
+                  <ArrowUpLeft className="h-5 w-5" aria-hidden />
                 </a>
               </div>
 
-              <GlassCard id="roles" className="p-5 sm:p-6">
-                <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                  <div>
-                    <div className="text-xs font-bold tracking-[0.28em] text-primary uppercase">
-                      Role Selection
-                    </div>
-                    <h2 className="mt-3 text-2xl font-black text-foreground">اختر نوع الحساب</h2>
-                    <p className="mt-2 max-w-xl text-sm leading-7 text-muted">
-                      واجهة واحدة بتجربتين فقط: مالك سيارة يبدأ من المركبة والزيت والمتجر والحجز،
-                      أو ميكانيكي يدير الطلبات والخدمة من لوحة تنفيذية واضحة.
-                    </p>
-                  </div>
-                  <div className="inline-flex rounded-full border border-primary/20 bg-black/20 p-1">
-                    <button
-                      type="button"
-                      onClick={() => setActiveRole("client")}
-                      className={[
-                        "rounded-full px-5 py-3 text-sm font-bold transition",
-                        activeRole === "client"
-                          ? "bg-primary text-primary-foreground shadow-[0_18px_42px_-28px_rgba(201,168,76,0.7)]"
-                          : "text-muted hover:text-foreground",
-                      ].join(" ")}
-                    >
-                      مالك سيارة (Client)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveRole("mechanic")}
-                      className={[
-                        "rounded-full px-5 py-3 text-sm font-bold transition",
-                        activeRole === "mechanic"
-                          ? "bg-primary text-primary-foreground shadow-[0_18px_42px_-28px_rgba(201,168,76,0.7)]"
-                          : "text-muted hover:text-foreground",
-                      ].join(" ")}
-                    >
-                      ميكانيكي (Mechanic)
-                    </button>
-                  </div>
-                </div>
-              </GlassCard>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                {[
-                  { value: "5W30 / 5W40", label: "توصيات زيوت حسب العلامة والمحرك" },
-                  { value: "24/7", label: "تشخيص أوضح قبل الحجز" },
-                  { value: "4.9/5", label: "تجربة خدمة وميكانيكيين مقيمين" },
-                ].map((item) => (
-                  <GlassCard key={item.label} className="p-4">
-                    <div className="text-xl font-black text-primary">{item.value}</div>
-                    <div className="mt-2 text-sm leading-6 text-muted">{item.label}</div>
-                  </GlassCard>
+              <div className="flex flex-wrap gap-3">
+                {trustBadges.map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex items-center gap-2 rounded-full border border-primary/16 bg-card/72 px-4 py-2 text-sm text-foreground/88 backdrop-blur-xl"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_14px_rgba(201,168,76,0.55)]" />
+                    {badge}
+                  </span>
                 ))}
               </div>
             </div>
 
-            <div className="order-1 mx-auto w-full max-w-[820px] lg:order-2">
+            <div className="order-1 mx-auto w-full max-w-[860px] lg:order-2">
               <div className="relative">
-                <div className="absolute inset-x-[16%] top-10 h-32 rounded-full bg-primary/20 blur-[78px]" />
-                <div className="absolute -right-2 top-12 z-20 hidden w-52 rounded-[28px] border border-primary/20 bg-black/45 p-4 shadow-[0_30px_60px_-40px_rgba(0,0,0,0.9)] backdrop-blur-2xl sm:block">
+                <div className="absolute inset-x-[18%] top-16 h-40 rounded-full bg-primary/22 blur-[78px]" />
+                <div className="absolute -left-2 top-14 hidden w-52 rounded-[30px] border border-primary/20 bg-black/45 p-5 backdrop-blur-2xl lg:block">
                   <div className="text-[11px] font-bold tracking-[0.24em] text-primary uppercase">
-                    Maintenance Intelligence
+                    Premium Maintenance OS
                   </div>
-                  <div className="mt-3 text-2xl font-black text-white">+31%</div>
-                  <div className="mt-1 text-sm leading-6 text-white/72">
-                    قرارات أسرع من توصية الزيت إلى الحجز والتنفيذ.
+                  <div className="mt-3 text-2xl font-black text-white">+42%</div>
+                  <div className="mt-2 text-sm leading-6 text-white/72">
+                    انتقال أسرع من فهم الحالة إلى اتخاذ قرار الخدمة الصحيح.
                   </div>
                 </div>
-                <div className="absolute -left-2 bottom-8 z-20 hidden w-56 rounded-[28px] border border-primary/20 bg-black/55 p-4 backdrop-blur-2xl sm:block">
+                <div className="absolute -right-3 bottom-12 hidden w-56 rounded-[30px] border border-primary/20 bg-black/52 p-5 backdrop-blur-2xl lg:block">
                   <div className="flex items-center gap-2 text-primary">
                     <CheckCircle2 className="h-4 w-4" aria-hidden />
                     <span className="text-[11px] font-bold tracking-[0.24em] uppercase">
-                      Premium Control
+                      Luxury Automotive UX
                     </span>
                   </div>
                   <div className="mt-3 text-lg font-bold text-white">
-                    سجل واضح، زيت أدق، ميكانيكي أقرب.
+                    صورة أوضح للمركبة. تكلفة أقل للمفاجآت.
                   </div>
                 </div>
 
-                <GlassCard className="overflow-hidden p-4 sm:p-5">
-                  <div className="relative overflow-hidden rounded-[34px] border border-white/8 bg-black">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(255,255,255,0.18),transparent_22%),radial-gradient(circle_at_82%_14%,rgba(201,168,76,0.22),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.76))]" />
-                    <Image
-                      src={heroVehicle}
-                      alt="سيارة معروضة ضمن واجهة سيارتي"
-                      width={1280}
-                      height={860}
-                      priority
-                      quality={90}
-                      sizes="(max-width: 1024px) 100vw, 52vw"
-                      className="relative z-10 h-[520px] w-full object-cover object-center saturate-[1.06] contrast-125"
-                    />
-                    <div className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,transparent_36%,rgba(0,0,0,0.68)_100%)]" />
+                <GlassCard className="overflow-hidden p-4 sm:p-6">
+                  <div className="relative overflow-hidden rounded-[40px] border border-white/8 bg-[linear-gradient(180deg,rgba(14,16,20,0.55),rgba(4,5,7,0.96))] px-4 pb-8 pt-8 sm:px-8">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_0%,rgba(255,255,255,0.16),transparent_24%),radial-gradient(circle_at_84%_16%,rgba(201,168,76,0.22),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.75))]" />
+                    <div className="absolute inset-x-[15%] top-[14%] h-32 rounded-full bg-white/8 blur-[70px]" />
 
-                    <div className="absolute right-5 top-5 z-30 rounded-[26px] border border-primary/20 bg-black/52 px-5 py-4 backdrop-blur-2xl">
-                      <div className="text-[11px] font-bold tracking-[0.22em] text-primary uppercase">
-                        Hero Visual
+                    <div className="relative z-10">
+                      <div className="mx-auto w-full max-w-[720px] [transform:perspective(1800px)_rotateY(-14deg)_rotateX(7deg)_translateY(-2px)] drop-shadow-[0_50px_70px_rgba(0,0,0,0.55)] transition duration-500 hover:[transform:perspective(1800px)_rotateY(-10deg)_rotateX(5deg)_translateY(-6px)]">
+                        <div className="relative">
+                          <div className="absolute inset-x-[18%] bottom-1 h-10 rounded-full bg-black/70 blur-[34px]" />
+                          <Image
+                            src={heroVehicle}
+                            alt="المركبة الرئيسية في واجهة سيارتي"
+                            width={1440}
+                            height={960}
+                            priority
+                            quality={92}
+                            sizes="(max-width: 1024px) 100vw, 55vw"
+                            className="relative z-10 h-auto w-full object-contain saturate-[1.08] contrast-125 brightness-[1.04]"
+                          />
+                          <div className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent_24%,rgba(0,0,0,0.18)_58%,rgba(0,0,0,0.44)_100%)]" />
+                          <div className="pointer-events-none absolute inset-x-[18%] top-[12%] z-20 h-16 rounded-full bg-white/14 blur-[28px]" />
+                        </div>
                       </div>
-                      <div className="mt-2 text-lg font-bold text-white">Dark Glass Experience</div>
-                    </div>
 
-                    <div className="absolute bottom-5 left-5 right-5 z-30 grid gap-3 md:grid-cols-3">
-                      {[
-                        { label: "Role-based system", value: "2 Roles", icon: CarFront },
-                        { label: "Oil recommendation", value: "Smart Match", icon: Droplets },
-                        { label: "Mechanic booking", value: "Nearby Pros", icon: MapPin },
-                      ].map((item) => {
-                        const Icon = item.icon;
-                        return (
+                      <div className="mt-8 grid gap-3 md:grid-cols-3">
+                        {[
+                          { value: "Digital Service Ledger", label: "سجل خدمات موثق" },
+                          { value: "Oil Intelligence", label: "مطابقة دقيقة للزيوت" },
+                          { value: "Trusted Mechanics", label: "شبكة خدمات موثوقة" },
+                        ].map((item) => (
                           <div
                             key={item.label}
-                            className="rounded-[24px] border border-white/8 bg-black/55 px-4 py-4 text-white backdrop-blur-2xl"
+                            className="rounded-[24px] border border-white/8 bg-black/52 px-4 py-4 text-white backdrop-blur-2xl"
                           >
-                            <div className="flex items-center gap-2 text-primary">
-                              <Icon className="h-4 w-4" aria-hidden />
-                              <span className="text-[11px] font-bold tracking-[0.22em] uppercase">
-                                {item.value}
-                              </span>
+                            <div className="text-[11px] font-bold tracking-[0.22em] text-primary uppercase">
+                              {item.value}
                             </div>
-                            <div className="mt-2 text-sm text-white/72">{item.label}</div>
+                            <div className="mt-2 text-sm text-white/74">{item.label}</div>
                           </div>
-                        );
-                      })}
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </GlassCard>
@@ -392,411 +349,249 @@ export default function LandingUI() {
             </div>
           </section>
 
-          <section className="border-t border-border/70 py-20 sm:py-24">
+          <section id="features" className="border-t border-border/70 py-20 sm:py-24">
             <div className="container-app">
               <SectionHeader
-                eyebrow={activeRole === "client" ? "Client Flow" : "Mechanic Flow"}
-                title={
-                  activeRole === "client"
-                    ? "Client → Vehicle → Oil → Store → Mechanics"
-                    : "Mechanic → Dashboard → Requests → Service Management"
-                }
-                description={
-                  activeRole === "client"
-                    ? "تدفق عميل واضح يبدأ من بيانات المركبة ثم يقدّم توصيات زيت مرئية، متجر منتجات وخدمات، ثم بطاقات ميكانيكيين قريبة للحجز."
-                    : "لوحة تنفيذية للميكانيكي تعرض الطلبات الواردة، أعمال تغيير الزيت، طلبات الصيانة، وقائمة العملاء مع إجراءات مباشرة لإدارة الخدمة."
-                }
+                eyebrow="Platform Features"
+                title="كل ما تحتاجه لسيارتك في منصة واحدة"
+                description="واجهة عربية فائقة الوضوح تجمع البيانات والخدمات والحجوزات والتوصيات داخل تجربة واحدة راقية ومتماسكة."
               />
 
-              {activeRole === "client" ? (
-                <div className="mt-14 grid gap-8">
-                  <GlassCard className="p-6 sm:p-8">
-                    <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                      <div>
-                        <div className="text-xs font-bold tracking-[0.24em] text-primary uppercase">
-                          Step 1
-                        </div>
-                        <h3 className="mt-2 text-2xl font-black text-foreground">
-                          اختيار السيارة والمحرك
-                        </h3>
-                        <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-                          اختر العلامة التجارية والموديل ونوع المحرك حتى يتم توليد توصيات الزيت
-                          الصحيحة لك بشكل فوري.
-                        </p>
+              <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                {features.map((feature) => {
+                  const Icon = feature.icon;
+                  return (
+                    <GlassCard
+                      key={feature.title}
+                      className="group h-full p-6 transition duration-300 hover:-translate-y-2 hover:border-primary/30"
+                    >
+                      <div className="flex h-14 w-14 items-center justify-center rounded-[22px] border border-primary/20 bg-primary/10 text-primary transition duration-300 group-hover:scale-105">
+                        <Icon className="h-7 w-7" aria-hidden />
                       </div>
-                      <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.2em] text-primary uppercase">
-                        Client Role Active
+                      <h3 className="mt-6 text-2xl font-black text-foreground">{feature.title}</h3>
+                      <p className="mt-4 text-sm leading-8 text-muted">{feature.description}</p>
+                    </GlassCard>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          <section id="oils" className="border-t border-border/70 py-20 sm:py-24">
+            <div className="container-app">
+              <SectionHeader
+                eyebrow="Recommended Oil"
+                title="الزيت المناسب لسيارتك"
+                description="بطاقات منتجات مرئية مصممة لتجعل اختيار الزيت المناسب أكثر وضوحاً وثقة بدون توصيات نصية جافة."
+              />
+
+              <div className="mt-14 grid gap-6 lg:grid-cols-3">
+                {oilProducts.map((oil) => (
+                  <GlassCard key={`${oil.brand}-${oil.productName}`} className="overflow-hidden">
+                    <div className="relative h-72">
+                      <Image
+                        src={oil.image}
+                        alt={oil.productName}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 33vw"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.78)_100%)]" />
+                      <div className="absolute right-4 top-4 rounded-full border border-primary/20 bg-black/45 px-3 py-1 text-xs font-bold tracking-[0.18em] text-primary uppercase backdrop-blur-xl">
+                        {oil.viscosity}
                       </div>
                     </div>
 
-                    <div className="mt-8 grid gap-4 lg:grid-cols-3">
-                      <label className="grid gap-2 text-sm text-muted">
-                        <span>العلامة التجارية</span>
-                        <select
-                          value={selectedBrand}
-                          onChange={(event) => {
-                            const brand = event.target.value as Brand;
-                            setSelectedBrand(brand);
-                            setSelectedModel(vehicleCatalog[brand][0]);
-                          }}
-                          className="input"
-                        >
-                          {Object.keys(vehicleCatalog).map((brand) => (
-                            <option key={brand} value={brand}>
-                              {brand}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-
-                      <label className="grid gap-2 text-sm text-muted">
-                        <span>الموديل</span>
-                        <select
-                          value={selectedModel}
-                          onChange={(event) => setSelectedModel(event.target.value)}
-                          className="input"
-                        >
-                          {vehicleCatalog[selectedBrand].map((model) => (
-                            <option key={model} value={model}>
-                              {model}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-
-                      <label className="grid gap-2 text-sm text-muted">
-                        <span>نوع المحرك</span>
-                        <select
-                          value={selectedEngine}
-                          onChange={(event) => setSelectedEngine(event.target.value as EngineType)}
-                          className="input"
-                        >
-                          {engineOptions.map((engine) => (
-                            <option key={engine} value={engine}>
-                              {engine}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
+                    <div className="p-6">
+                      <div className="text-sm font-semibold text-primary">{oil.brand}</div>
+                      <div className="mt-2 text-2xl font-black text-foreground">{oil.productName}</div>
+                      <div className="mt-3 text-sm leading-7 text-muted">
+                        تركيبة مناسبة للمحركات الحديثة مع أداء ثابت وحماية أعلى في ظروف القيادة اليومية.
+                      </div>
+                      <Link href="/customer/store" className="btn-primary mt-6 w-full">
+                        عرض في المتجر
+                        <ArrowLeft className="h-4 w-4" aria-hidden />
+                      </Link>
                     </div>
                   </GlassCard>
+                ))}
+              </div>
+            </div>
+          </section>
 
-                  <div id="oil" className="grid gap-6">
-                    <div className="flex items-end justify-between gap-4">
-                      <div>
-                        <div className="text-xs font-bold tracking-[0.24em] text-primary uppercase">
-                          Step 2
+          <section id="how-it-works" className="border-t border-border/70 py-20 sm:py-24">
+            <div className="container-app">
+              <SectionHeader
+                eyebrow="How It Works"
+                title="كيف تعمل سيارتي؟"
+                description="رحلة حديثة وسلسة تبدأ من إضافة المركبة وتنتهي بمتابعة الصيانة والخدمات من مكان واحد."
+              />
+
+              <div className="relative mt-16 grid gap-6 lg:grid-cols-3">
+                <div className="pointer-events-none absolute right-[16.7%] left-[16.7%] top-12 hidden h-px bg-[linear-gradient(90deg,rgba(201,168,76,0.02),rgba(201,168,76,0.5),rgba(201,168,76,0.02))] lg:block" />
+                {steps.map((step) => (
+                  <GlassCard key={step.number} className="relative p-6 sm:p-7">
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-lg font-black text-primary">
+                        {step.number}
+                      </div>
+                      <div className="text-2xl font-black text-foreground">{step.title}</div>
+                    </div>
+                    <p className="mt-6 text-sm leading-8 text-muted">{step.description}</p>
+                  </GlassCard>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="benefits" className="border-t border-border/70 py-20 sm:py-24">
+            <div className="container-app">
+              <SectionHeader
+                eyebrow="Benefits"
+                title="لماذا يستخدم أصحاب السيارات سيارتي؟"
+                description="لأن المنصة لا تكتفي بجمع المعلومات، بل ترتبها وتحوّلها إلى قرارات تشغيلية أوضح وأكثر هدوءاً."
+              />
+
+              <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                {benefits.map((benefit) => (
+                  <GlassCard key={benefit.title} className="h-full p-6">
+                    <div className="text-sm font-bold tracking-[0.24em] text-primary uppercase">
+                      {benefit.value}
+                    </div>
+                    <h3 className="mt-4 text-2xl font-black text-foreground">{benefit.title}</h3>
+                    <p className="mt-4 text-sm leading-8 text-muted">{benefit.description}</p>
+                  </GlassCard>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="testimonials" className="border-t border-border/70 py-20 sm:py-24">
+            <div className="container-app">
+              <SectionHeader
+                eyebrow="Testimonials"
+                title="أصحاب سيارات وجدوا تجربة أوضح وأكثر أناقة"
+                description="ثقة المستخدم تبدأ عندما تبدو الواجهة راقية، لكنها تكتمل عندما تتحول القرارات اليومية إلى شيء مفهوم وسلس."
+              />
+
+              <div className="mt-14 grid gap-6 lg:grid-cols-3">
+                {testimonials.map((testimonial) => (
+                  <GlassCard key={testimonial.name} className="h-full p-7">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <Image
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          width={88}
+                          height={88}
+                          className="h-16 w-16 rounded-2xl object-cover ring-1 ring-primary/20"
+                        />
+                        <div>
+                          <div className="text-lg font-black text-foreground">{testimonial.name}</div>
+                          <div className="mt-1 text-sm text-muted">{testimonial.role}</div>
                         </div>
-                        <h3 className="mt-2 text-2xl font-black text-foreground">
-                          توصيات الزيت المناسبة
-                        </h3>
                       </div>
-                      <div className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
-                        {selectedBrand} {selectedModel} / {selectedEngine}
-                      </div>
-                    </div>
-
-                    <div className="grid gap-6 lg:grid-cols-2">
-                      {recommendedOils.map((oil) => (
-                        <GlassCard key={`${oil.productName}-${oil.viscosity}`} className="overflow-hidden">
-                          <div className="relative h-64">
-                            <Image
-                              src={oil.image}
-                              alt={oil.productName}
-                              fill
-                              sizes="(max-width: 1024px) 100vw, 50vw"
-                              className="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.72)_100%)]" />
-                            <div className="absolute right-4 top-4 rounded-full border border-primary/25 bg-black/45 px-3 py-1 text-xs font-bold tracking-[0.16em] text-primary uppercase backdrop-blur-xl">
-                              {oil.viscosity}
-                            </div>
-                          </div>
-                          <div className="p-6">
-                            <div className="text-sm text-primary">{oil.brand}</div>
-                            <div className="mt-2 text-2xl font-black text-foreground">
-                              {oil.productName}
-                            </div>
-                            <div className="mt-2 text-sm leading-7 text-muted">
-                              لزوجة موصى بها لمحرك {selectedBrand} {selectedModel} مع توافق مباشر
-                              مع احتياج {selectedEngine}.
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => setStoreOpen(true)}
-                              className="btn-primary mt-6 w-full"
-                            >
-                              عرض في المتجر
-                              <ArrowLeft className="h-4 w-4" aria-hidden />
-                            </button>
-                          </div>
-                        </GlassCard>
-                      ))}
-                    </div>
-                  </div>
-
-                  <GlassCard className="p-6 sm:p-8">
-                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                      <div>
-                        <div className="text-xs font-bold tracking-[0.24em] text-primary uppercase">
-                          Step 3
-                        </div>
-                        <h3 className="mt-2 text-2xl font-black text-foreground">الدخول إلى المتجر</h3>
-                        <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-                          المتجر يعرض زيوت المحركات وقطع الغيار والخدمات ضمن بطاقات مرئية قابلة
-                          للاستكشاف بنفس الواجهة الفاخرة.
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setStoreOpen(true)}
-                        className="btn-primary h-14 px-8 text-base"
-                      >
-                        الدخول إلى المتجر
-                        <ShoppingBag className="h-5 w-5" aria-hidden />
-                      </button>
-                    </div>
-
-                    {storeOpen ? (
-                      <div className="mt-8 grid gap-6 lg:grid-cols-3">
-                        {storeProducts.map((product) => (
-                          <GlassCard key={product.title} className="overflow-hidden">
-                            <div className="relative h-56">
-                              <Image
-                                src={product.image}
-                                alt={product.title}
-                                fill
-                                sizes="(max-width: 1024px) 100vw, 33vw"
-                                className="object-cover"
-                              />
-                              <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_10%,rgba(0,0,0,0.78)_100%)]" />
-                              <div className="absolute right-4 top-4 rounded-full border border-primary/25 bg-black/45 px-3 py-1 text-xs font-bold tracking-[0.16em] text-primary uppercase backdrop-blur-xl">
-                                {product.category}
-                              </div>
-                            </div>
-                            <div className="p-6">
-                              <div className="text-xl font-black text-foreground">{product.title}</div>
-                              <div className="mt-3 text-sm leading-7 text-muted">{product.subtitle}</div>
-                            </div>
-                          </GlassCard>
+                      <div className="flex items-center gap-1 text-primary">
+                        {Array.from({ length: 5 }, (_, index) => (
+                          <Star key={`${testimonial.name}-${index}`} className="h-4 w-4 fill-current" aria-hidden />
                         ))}
                       </div>
-                    ) : null}
+                    </div>
+                    <p className="mt-6 text-sm leading-8 text-muted">&quot;{testimonial.quote}&quot;</p>
                   </GlassCard>
+                ))}
+              </div>
+            </div>
+          </section>
 
-                  <div id="mechanics" className="grid gap-6">
-                    <div>
-                      <div className="text-xs font-bold tracking-[0.24em] text-primary uppercase">
-                        Step 4
-                      </div>
-                      <h3 className="mt-2 text-2xl font-black text-foreground">
-                        ميكانيكيون قريبون للحجز
-                      </h3>
-                    </div>
-                    <div className="grid gap-6 lg:grid-cols-3">
-                      {mechanics.map((mechanic) => (
-                        <GlassCard key={mechanic.name} className="overflow-hidden">
-                          <div className="relative h-64">
-                            <Image
-                              src={mechanic.image}
-                              alt={mechanic.name}
-                              fill
-                              sizes="(max-width: 1024px) 100vw, 33vw"
-                              className="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_5%,rgba(0,0,0,0.82)_100%)]" />
-                          </div>
-                          <div className="p-6">
-                            <div className="text-xl font-black text-foreground">{mechanic.name}</div>
-                            <div className="mt-3 flex items-center gap-2 text-sm text-muted">
-                              <MapPin className="h-4 w-4 text-primary" aria-hidden />
-                              {mechanic.location}
-                            </div>
-                            <div className="mt-3 flex items-center gap-2 text-sm text-primary">
-                              <Star className="h-4 w-4 fill-current" aria-hidden />
-                              {mechanic.rating}
-                            </div>
-                            <div className="mt-4 flex flex-wrap gap-2">
-                              {mechanic.services.map((service) => (
-                                <span
-                                  key={service}
-                                  className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-foreground"
-                                >
-                                  {service}
-                                </span>
-                              ))}
-                            </div>
-                            <button type="button" className="btn-secondary mt-6 w-full">
-                              احجز ميكانيكي
-                              <ArrowLeft className="h-4 w-4" aria-hidden />
-                            </button>
-                          </div>
-                        </GlassCard>
-                      ))}
-                    </div>
+          <section className="border-t border-border/70 py-20 sm:py-24">
+            <div className="container-app">
+              <GlassCard className="overflow-hidden px-6 py-10 sm:px-10 sm:py-14">
+                <div className="absolute inset-x-[20%] top-0 h-44 rounded-full bg-primary/16 blur-[80px]" />
+                <div className="relative z-10 mx-auto max-w-3xl text-center">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.24em] text-primary uppercase">
+                    <BadgeCheck className="h-4 w-4" aria-hidden />
+                    Final CTA
+                  </div>
+                  <h2 className="mt-6 font-display text-3xl font-black leading-tight text-foreground sm:text-5xl">
+                    ابدأ إدارة سيارتك بطريقة أكثر ذكاءً
+                  </h2>
+                  <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-muted sm:text-lg">
+                    أنشئ حسابك وابدأ في متابعة صيانة سيارتك من مكان واحد.
+                  </p>
+                  <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                    <Link href="/choose-role" className="btn-primary h-14 px-8 text-base">
+                      ابدأ الآن
+                      <ArrowLeft className="h-5 w-5" aria-hidden />
+                    </Link>
+                    <a href="#features" className="btn-secondary h-14 px-8 text-base">
+                      استكشف المنصة
+                      <ArrowUpLeft className="h-5 w-5" aria-hidden />
+                    </a>
                   </div>
                 </div>
-              ) : (
-                <div id="dashboard" className="mt-14 grid gap-8">
-                  <div className="grid gap-4 lg:grid-cols-4">
-                    {dashboardStats.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <GlassCard key={item.label} className="p-5">
-                          <div className="flex items-center justify-between gap-4">
-                            <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-                              <Icon className="h-6 w-6" aria-hidden />
-                            </span>
-                            <div className="text-3xl font-black text-primary">{item.value}</div>
-                          </div>
-                          <div className="mt-4 text-sm leading-7 text-muted">{item.label}</div>
-                        </GlassCard>
-                      );
-                    })}
-                  </div>
-
-                  <GlassCard className="p-6 sm:p-8">
-                    <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-                      <div>
-                        <div className="text-xs font-bold tracking-[0.24em] text-primary uppercase">
-                          Mechanic Dashboard
-                        </div>
-                        <h3 className="mt-2 text-2xl font-black text-foreground">
-                          الطلبات الواردة وإدارة الخدمة
-                        </h3>
-                        <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-                          كل بطاقة طلب تعرض نوع السيارة والخدمة المطلوبة والحالة الحالية مع إجراءات
-                          مباشرة للقبول وتحديث الحالة وتأكيد الإنجاز.
-                        </p>
-                      </div>
-                      <div className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.18em] text-primary uppercase">
-                        Mechanic Role Active
-                      </div>
-                    </div>
-
-                    <div className="mt-8 grid gap-5 lg:grid-cols-2">
-                      {mechanicRequests.map((request) => (
-                        <div
-                          key={`${request.carType}-${request.requestedService}`}
-                          className="rounded-[28px] border border-border/80 bg-black/20 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
-                        >
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <div className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
-                                {request.carType}
-                              </div>
-                              <div className="mt-2 text-xl font-black text-foreground">
-                                {request.requestedService}
-                              </div>
-                            </div>
-                            <span
-                              className={[
-                                "rounded-full border px-3 py-1 text-xs font-bold uppercase",
-                                statusTone(request.status),
-                              ].join(" ")}
-                            >
-                              {statusLabel(request.status)}
-                            </span>
-                          </div>
-
-                          <div className="mt-5 flex flex-wrap gap-3">
-                            <button type="button" className="btn-secondary">
-                              قبول الطلب
-                            </button>
-                            <button type="button" className="btn-secondary">
-                              تحديث الحالة
-                            </button>
-                            <button type="button" className="btn-primary">
-                              تأكيد الإنجاز
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </GlassCard>
-
-                  <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-                    <GlassCard className="p-6 sm:p-8">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-                          <Droplets className="h-6 w-6" aria-hidden />
-                        </span>
-                        <div>
-                          <div className="text-xs font-bold tracking-[0.22em] text-primary uppercase">
-                            Oil Change & Maintenance
-                          </div>
-                          <div className="mt-1 text-2xl font-black text-foreground">
-                            أعمال تغيير الزيت والصيانة
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-6 grid gap-4 md:grid-cols-3">
-                        {[
-                          {
-                            title: "Oil change (vidange)",
-                            value: "07 jobs",
-                            icon: Droplets,
-                          },
-                          {
-                            title: "Maintenance requests",
-                            value: "11 requests",
-                            icon: Wrench,
-                          },
-                          {
-                            title: "Diagnostics queue",
-                            value: "05 pending",
-                            icon: Gauge,
-                          },
-                        ].map((item) => {
-                          const Icon = item.icon;
-                          return (
-                            <div
-                              key={item.title}
-                              className="rounded-[26px] border border-border/80 bg-black/20 p-5"
-                            >
-                              <Icon className="h-6 w-6 text-primary" aria-hidden />
-                              <div className="mt-4 text-lg font-black text-foreground">{item.value}</div>
-                              <div className="mt-2 text-sm leading-6 text-muted">{item.title}</div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </GlassCard>
-
-                    <GlassCard className="p-6 sm:p-8">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-                          <UserCircle2 className="h-6 w-6" aria-hidden />
-                        </span>
-                        <div>
-                          <div className="text-xs font-bold tracking-[0.22em] text-primary uppercase">
-                            Client List
-                          </div>
-                          <div className="mt-1 text-2xl font-black text-foreground">قائمة العملاء</div>
-                        </div>
-                      </div>
-
-                      <div className="mt-6 grid gap-3">
-                        {mechanicClients.map((client) => (
-                          <div
-                            key={`${client.name}-${client.car}`}
-                            className="rounded-[24px] border border-border/80 bg-black/20 p-4"
-                          >
-                            <div className="text-lg font-bold text-foreground">{client.name}</div>
-                            <div className="mt-2 text-sm text-muted">{client.car}</div>
-                            <div className="mt-1 text-xs tracking-[0.18em] text-primary uppercase">
-                              {client.lastVisit}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </GlassCard>
-                  </div>
-                </div>
-              )}
+              </GlassCard>
             </div>
           </section>
         </main>
+
+        <footer id="about" className="relative z-10 border-t border-border/70 pb-12 pt-10">
+          <div className="container-app">
+            <GlassCard className="p-6 sm:p-8">
+              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_0.8fr]">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
+                      <Image src={logoSrc} alt="Sayarati" width={24} height={24} className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <div className="text-lg font-black text-foreground">{SITE.nameAr}</div>
+                      <div className="text-[11px] tracking-[0.32em] text-primary/80 uppercase">
+                        About
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-4 max-w-xl text-sm leading-8 text-muted">
+                    سيارتي منصة تقنية سيارات فاخرة تساعدك على متابعة الصيانة، فهم الاحتياجات
+                    الصحيحة للمركبة، والوصول إلى خدمات وقطع غيار موثوقة ضمن تجربة واحدة واضحة.
+                  </p>
+                </div>
+
+                <div id="contact">
+                  <div className="text-[11px] font-bold tracking-[0.28em] text-primary uppercase">
+                    Contact
+                  </div>
+                  <div className="mt-4 grid gap-3 text-sm text-muted">
+                    <a href={`mailto:${SITE.email}`} className="transition hover:text-foreground">
+                      {SITE.email}
+                    </a>
+                    <a href={`tel:${SITE.phone}`} className="transition hover:text-foreground">
+                      {SITE.phone}
+                    </a>
+                    <div>{SITE.city}</div>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 text-sm">
+                  <Link href="/privacy" className="transition hover:text-foreground">
+                    Privacy Policy
+                  </Link>
+                  <Link href="/terms" className="transition hover:text-foreground">
+                    Terms of Service
+                  </Link>
+                  <Link href="/choose-role" className="transition hover:text-foreground">
+                    ابدأ الآن
+                  </Link>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 border-t border-border/70 pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+                <div>© 2026 {SITE.nameEn}</div>
+                <div>Premium automotive SaaS experience in Arabic RTL.</div>
+              </div>
+            </GlassCard>
+          </div>
+        </footer>
       </div>
     </div>
   );
