@@ -16,7 +16,7 @@ export default function LandingMobileMenu({ navItems }: { navItems: NavItem[] })
     <>
       <button
         type="button"
-        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground lg:hidden"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200/80 bg-white/80 text-slate-950 backdrop-blur-xl lg:hidden dark:border-white/10 dark:bg-white/5 dark:text-white"
         aria-label="Open menu"
         aria-expanded={menuOpen}
         onClick={() => setMenuOpen((value) => !value)}
@@ -25,13 +25,13 @@ export default function LandingMobileMenu({ navItems }: { navItems: NavItem[] })
       </button>
 
       {menuOpen ? (
-        <div className="card mt-3 p-4 lg:hidden">
+        <div className="mt-3 rounded-[28px] border border-slate-200/80 bg-white/85 p-4 shadow-[0_22px_60px_-34px_rgba(15,23,42,0.22)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/80 lg:hidden">
           <nav className="grid gap-2">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="rounded-2xl px-4 py-3 text-sm font-semibold text-muted transition hover:bg-card-2 hover:text-foreground"
+                className="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 transition hover:bg-sky-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
                 onClick={() => setMenuOpen(false)}
               >
                 {item.label}
@@ -39,7 +39,7 @@ export default function LandingMobileMenu({ navItems }: { navItems: NavItem[] })
             ))}
             <Link
               href="/choose-role"
-              className="btn-primary mt-2 h-11 justify-center text-sm"
+              className="mt-2 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-sky-600 px-5 text-sm font-semibold text-white transition hover:bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-400"
               onClick={() => setMenuOpen(false)}
             >
               ابدأ الآن
