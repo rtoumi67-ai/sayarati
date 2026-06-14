@@ -1,610 +1,916 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ArrowUpRight,
   BadgeCheck,
   Bot,
   CalendarCheck,
-  Clock3,
+  CheckCircle2,
+  Droplets,
+  FileText,
   Gauge,
   Mail,
-  MapPinned,
+  Menu,
   MessageSquareText,
+  Moon,
+  Phone,
   ShieldCheck,
+  ShoppingBag,
   Sparkles,
   Star,
-  Users,
+  Sun,
+  User,
+  Wrench,
+  X,
 } from "lucide-react";
 
-import LandingMobileMenu from "./LandingMobileMenu";
 import { SITE } from "../components/site";
+import { formatDaPrice, getAllOilStoreProducts } from "../customer/store/catalog";
+import { useTheme } from "../theme/ThemeProvider";
 
 const heroVehicle = "/assets/doblo.jpg";
 const logoSrc = "/favicon.ico";
+const oilProducts = getAllOilStoreProducts().slice(0, 4);
 
 const navItems = [
-  { label: "الرئيسية", href: "#home" },
-  { label: "الخدمات", href: "#services" },
-  { label: "الرحلة", href: "#timeline" },
-  { label: "الآراء", href: "#testimonials" },
-  { label: "التواصل", href: "#contact" },
+  { label: "عن سيارتي", href: "#about" },
+  { label: "المزايا", href: "#features" },
+  { label: "الزيوت", href: "#oils" },
+  { label: "آراء العملاء", href: "#testimonials" },
+  { label: "تواصل", href: "#contact" },
 ];
 
-const heroMetrics = [
-  { value: "12K+", label: "ملف مركبة نشط" },
-  { value: "96%", label: "رضا عن تجربة الحجز" },
-  { value: "24/7", label: "مساعد ذكي ومتابعة" },
+const trustBadges = [
+  "سجل صيانة رقمي",
+  "توصيات زيوت دقيقة",
+  "ميكانيكيون موثوقون",
+  "سوق قطع غيار متكامل",
 ];
 
-const trustMarks = ["Maintenance Intelligence", "Garage Booking", "Fleet Ready", "Arabic AI Support"];
+const aboutItems = [
+  {
+    title: "متابعة الصيانة",
+    description:
+      "سجل رقمي مرتب لكل خدمة وقطعة وفاتورة، حتى تبقى حالة السيارة واضحة في أي وقت.",
+  },
+  {
+    title: "توصيات الزيوت",
+    description:
+      "اقتراحات مبنية على نوع السيارة والموديل والاستخدام، لتقليل التخمين ورفع دقة القرار.",
+  },
+  {
+    title: "تشخيص الأعطال",
+    description:
+      "فهم أولي للأعراض والأسباب المحتملة قبل التوجه للورشة، مع توجيه واضح للخطوة التالية.",
+  },
+  {
+    title: "حجز الميكانيكي",
+    description:
+      "اختيار الفني المناسب وتثبيت الموعد ومتابعة حالة الخدمة ضمن رحلة واحدة سلسة.",
+  },
+  {
+    title: "سوق قطع الغيار",
+    description:
+      "عرض منتجات وخيارات شراء موثوقة داخل نفس المنصة، من دون التنقل بين أدوات متفرقة.",
+  },
+];
 
-const services = [
+const featureCards = [
   {
-    title: "سجل صيانة تنفيذي",
-    eyebrow: "Ownership Ledger",
-    description:
-      "كل زيارة، قطعة، ملاحظة، وضمان داخل سجل بصري مرتب يسهل الرجوع إليه عند البيع أو الصيانة.",
-    icon: ShieldCheck,
-    stat: "Full history",
+    title: "سجل الصيانة",
+    description: "توثيق كل خدمة بدقة مع تواريخ وفواتير وملاحظات يسهل الرجوع إليها.",
+    icon: FileText,
   },
   {
-    title: "توصيات زيت وقطع مبنية على الموديل",
-    eyebrow: "Smart Parts Match",
-    description:
-      "اقتراحات أكثر دقة حسب نوع السيارة والمحرك والاستخدام الفعلي بدل الاختيارات العامة المربكة.",
-    icon: Sparkles,
-    stat: "Model-aware",
+    title: "توصيات الزيوت",
+    description: "ترشيحات مناسبة للمحرك والموديل ونمط الاستخدام بدل التوصيات العامة.",
+    icon: Droplets,
   },
   {
-    title: "تشخيص أولي بالذكاء الاصطناعي",
-    eyebrow: "AI Diagnostics",
-    description:
-      "حلل الأصوات والأعراض قبل الذهاب إلى الورشة لتحصل على رؤية أوضح وتكلفة متوقعة بشكل أسرع.",
-    icon: Bot,
-    stat: "24/7 guidance",
-  },
-  {
-    title: "حجز ميكانيكيين مع تأكيدات واضحة",
-    eyebrow: "Service Booking",
-    description:
-      "اختيار الفني المناسب، تحديد الموعد، وتتبع حالة الطلب من الاستلام حتى التسليم النهائي.",
-    icon: CalendarCheck,
-    stat: "Live status",
-  },
-  {
-    title: "سوق خدمات وقطع بجودة أعلى",
-    eyebrow: "Marketplace",
-    description:
-      "مقارنة عروض الخدمات والزيوت وقطع الغيار داخل تجربة واحدة بتفاصيل تساعدك على اتخاذ القرار بثقة.",
+    title: "تشخيص الأعطال",
+    description: "تحليل أولي يساعدك على فهم العطل قبل زيارة الميكانيكي وتقدير الأولوية.",
     icon: Gauge,
-    stat: "Verified options",
   },
   {
-    title: "متابعة للأسطول والعائلة",
-    eyebrow: "Fleet & Multi-car",
-    description:
-      "إدارة أكثر من مركبة في حساب واحد مع تنبيهات مستقلة، تقارير دورية، وصورة تشغيلية أوضح.",
-    icon: Users,
-    stat: "Multi-vehicle",
+    title: "حجز الميكانيكيين",
+    description: "تجربة حجز واضحة مع مواعيد مؤكدة ومتابعة مستمرة لحالة الخدمة.",
+    icon: CalendarCheck,
+  },
+  {
+    title: "سوق قطع الغيار",
+    description: "وصول أسرع إلى منتجات مناسبة لسيارتك مع تجربة شراء أكثر تنظيمًا.",
+    icon: ShoppingBag,
+  },
+  {
+    title: "مساعد ذكي للسيارات",
+    description: "مساعد يفهم الأعراض الشائعة ويقدم توجيهًا عمليًا مبنيًا على السياق.",
+    icon: Bot,
   },
 ];
 
-const timeline = [
+const assistantPoints = [
+  "يرصد الأعراض التي تكتبها أو تلاحظها أثناء القيادة.",
+  "يقترح الأسباب المحتملة بحسب المؤشرات الشائعة.",
+  "يوصي بالحلول المناسبة أو مستوى الاستعجال.",
+  "يرشدك إلى خطوات صيانة وقائية تقلل الأعطال المفاجئة.",
+];
+
+const workSteps = [
   {
-    phase: "01",
-    title: "تهيئة المركبة والملف الرقمي",
-    description:
-      "أضف الموديل، العداد، آخر خدمة، وأهداف الاستخدام حتى تبدأ التوصيات من سياق حقيقي.",
+    step: "01",
+    title: "أضف سيارتك",
+    description: "ابدأ بمعلومات السيارة الأساسية حتى تصبح كل التوصيات أكثر دقة وارتباطًا بحالتها.",
   },
   {
-    phase: "02",
-    title: "فهم الحالة الحالية",
-    description:
-      "راجع التنبيهات، اسأل المساعد الذكي، واستكشف الخدمات المقترحة قبل اتخاذ أي خطوة تنفيذية.",
+    step: "02",
+    title: "احصل على التوصيات المناسبة",
+    description: "استعرض الزيوت والخدمات والتنبيهات المقترحة بناءً على بيانات سيارتك.",
   },
   {
-    phase: "03",
-    title: "حجز الخدمة المناسبة",
-    description:
-      "اختر الميكانيكي أو الورشة، ثبّت الموعد، وتابع تفاصيل الطلب والوقت المتوقع للإنجاز.",
+    step: "03",
+    title: "احجز الميكانيكي",
+    description: "اختر الفني المناسب وحدد موعد الخدمة من نفس المنصة دون خطوات مشتتة.",
   },
   {
-    phase: "04",
-    title: "توثيق ما تم وبناء القيمة المستقبلية",
-    description:
-      "أغلق الخدمة بسجل واضح وفواتير وملاحظات تساعدك في الصيانة القادمة وفي رفع قيمة المركبة.",
+    step: "04",
+    title: "تابع الصيانة",
+    description: "دوّن ما تم واحتفظ بتاريخ الخدمة لتبقى قراراتك القادمة مبنية على معلومات أوضح.",
   },
 ];
 
 const testimonials = [
   {
-    name: "دعاء بن طوبال",
-    role: "تدير ثلاث مركبات عائلية",
+    name: "آمنة قرفي",
+    role: "مالكة سيارة عائلية",
     quote:
-      "أكثر ما أعجبني هو أن المنصة تبدو فاخرة لكن عملية جدًا. أعرف ماذا فعلت بكل سيارة ومتى يجب أن أتحرك قبل أن تتحول الصيانة إلى مشكلة أكبر.",
-    photo:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=cinematic%20portrait%20of%20a%20confident%20north%20african%20woman%20car%20owner%2C%20premium%20automotive%20editorial%20lighting%2C%20graphite%20and%20amber%20tones%2C%20realistic%2C%20luxury%20garage%20background%2C%20professional%20headshot&image_size=square_hd",
+      "سيارتي أعطتني أخيرًا صورة كاملة عن السيارة: ماذا تم، ماذا يجب أن يتم، ومتى يجب أن أتصرف. الواجهة أنيقة لكن قيمتها الحقيقية في الوضوح.",
   },
   {
-    name: "وائل صالحي",
+    name: "ياسين بوعون",
     role: "يعتمد على الصيانة الوقائية",
     quote:
-      "تجربة الحجز والذكاء الاصطناعي اختصرت علي الوقت. صرت أصل للورشة وأنا أفهم الحالة أكثر، وهذا انعكس حتى على التكلفة والقرار النهائي.",
-    photo:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=realistic%20portrait%20of%20a%20north%20african%20man%20driver%20in%20a%20premium%20garage%2C%20automotive%20luxury%20editorial%20style%2C%20warm%20amber%20rim%20light%2C%20graphite%20background%2C%20detailed%20photography&image_size=square_hd",
+      "قسم توصيات الزيوت وفر علي وقتًا كثيرًا، والمساعد الذكي جعلني أصل للميكانيكي وأنا أفهم الاحتمالات بدل أن أبدأ من الصفر.",
   },
   {
-    name: "نوفل مسعودي",
-    role: "يبحث عن منصة موثوقة للعائلة",
+    name: "رنا شريفي",
+    role: "تدير أكثر من سيارة",
     quote:
-      "سيارتي جمعت السجل، التوصيات، والحجز في واجهة واحدة مرتبة. أشعر أنني أمتلك نظام متابعة حقيقي وليس مجرد تطبيق آخر للمعلومات.",
-    photo:
-      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=cinematic%20portrait%20of%20an%20elegant%20north%20african%20family%20car%20owner%2C%20premium%20automotive%20brand%20campaign%2C%20realistic%20skin%20texture%2C%20golden%20hour%20studio%20lighting%2C%20luxury%20service%20center%20background&image_size=square_hd",
+      "أكثر ما أحببته هو أن كل شيء في منصة واحدة: سجل الصيانة، الحجز، قطع الغيار، وحتى الإرشاد عند ظهور مشكلة مفاجئة.",
   },
 ];
 
-const faqs = [
-  {
-    question: "هل سيارتي مناسبة للأفراد فقط؟",
-    answer:
-      "لا، المنصة مناسبة للأفراد، العائلات، وحتى أصحاب أكثر من مركبة أو ورش ترغب في متابعة الطلبات بشكل احترافي.",
-  },
-  {
-    question: "هل أحتاج خبرة ميكانيكية لاستخدام المنصة؟",
-    answer:
-      "التجربة مبنية لتبسيط القرارات. تحصل على شرح واضح، تنبيهات مفهومة، وسياق يساعدك على التصرف بثقة حتى لو لم تكن خبيرًا.",
-  },
-  {
-    question: "كيف يعمل اختيار الدور؟",
-    answer:
-      "تبدأ من شاشة اختيار النوع لتحديد ما إذا كنت عميلًا أو ميكانيكيًا، ثم تتكيّف الرحلة والواجهة مع احتياجك مباشرة.",
-  },
-];
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const effectiveTheme = theme === "dark" ? "dark" : "light";
 
-const mapCities = [
-  { name: "El Taref", top: "26%", right: "18%" },
-  { name: "Annaba", top: "44%", right: "33%" },
-  { name: "Constantine", top: "63%", right: "52%" },
-  { name: "Skikda", top: "34%", right: "58%" },
-];
+  return (
+    <div className="inline-flex items-center rounded-full border border-[#d7e6ff] bg-white/85 p-1 text-[#12325b] shadow-[0_14px_30px_-22px_rgba(15,23,42,0.35)] dark:border-[#21406d] dark:bg-[#091222]/88 dark:text-[#dfe9ff]">
+      {([
+        { mode: "light" as const, icon: Sun, label: "فاتح" },
+        { mode: "dark" as const, icon: Moon, label: "داكن" },
+      ] as const).map((option) => {
+        const Icon = option.icon;
+        const selected = effectiveTheme === option.mode;
+
+        return (
+          <button
+            key={option.mode}
+            type="button"
+            onClick={() => setTheme(option.mode)}
+            className={[
+              "inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold transition sm:px-4",
+              selected
+                ? "bg-[#0f62fe] text-white shadow-[0_16px_30px_-20px_rgba(15,98,254,0.75)]"
+                : "text-[#5f7698] hover:text-[#0c2340] dark:text-[#8ba3c8] dark:hover:text-white",
+            ].join(" ")}
+            aria-pressed={selected}
+          >
+            <Icon className="h-4 w-4" aria-hidden />
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 function SectionHeader({
-  eyebrow,
+  label,
   title,
   description,
 }: {
-  eyebrow: string;
+  label: string;
   title: string;
   description: string;
 }) {
   return (
     <div className="mx-auto max-w-3xl text-center">
-      <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-[11px] font-bold tracking-[0.3em] text-primary/90 uppercase">
-        <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_18px_var(--glow-primary)]" />
-        {eyebrow}
+      <div className="inline-flex items-center gap-2 rounded-full border border-[#bfd8ff] bg-[#eef5ff] px-4 py-2 text-[11px] font-extrabold tracking-[0.28em] text-[#0f62fe] dark:border-[#284675] dark:bg-[#0c1730] dark:text-[#7db4ff]">
+        <span className="h-2 w-2 rounded-full bg-current" />
+        {label}
       </div>
-      <h2 className="mt-6 font-display text-3xl font-bold leading-tight text-foreground sm:text-5xl">
+      <h2 className="mt-6 font-display text-3xl font-black leading-tight text-[#08172d] dark:text-white sm:text-5xl">
         {title}
       </h2>
-      <p className="mt-4 text-base leading-8 text-muted sm:text-lg">{description}</p>
+      <p className="mt-5 text-base leading-8 text-[#5f7698] dark:text-[#9bb3d8] sm:text-lg">
+        {description}
+      </p>
     </div>
   );
 }
 
-function GlassCard({
+function PremiumCard({
   children,
   className = "",
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) {
-  return <div className={["card", className].join(" ")}>{children}</div>;
+  return (
+    <div
+      className={[
+        "rounded-[32px] border border-[#d7e6ff] bg-white/82 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-[#1a3258] dark:bg-[#091120]/84 dark:shadow-[0_30px_80px_-48px_rgba(2,8,20,0.92)]",
+        className,
+      ].join(" ")}
+    >
+      {children}
+    </div>
+  );
 }
 
 export default function LandingUI() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div dir="rtl" className="relative overflow-hidden bg-background text-foreground">
+    <div
+      dir="rtl"
+      className="relative overflow-hidden bg-[#f8fbff] text-[#08172d] dark:bg-[#040915] dark:text-white"
+    >
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(230,179,74,0.18),transparent_22%),radial-gradient(circle_at_84%_8%,rgba(247,191,70,0.14),transparent_18%),radial-gradient(circle_at_55%_46%,rgba(24,27,31,0.22),transparent_30%),linear-gradient(180deg,rgba(9,11,14,0.95)_0%,rgba(12,15,19,0.98)_48%,rgba(8,9,12,1)_100%)]" />
-        <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(230,179,74,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(230,179,74,0.05)_1px,transparent_1px)] [background-size:120px_120px]" />
-        <div className="absolute inset-x-[16%] top-0 h-48 rounded-full bg-primary/14 blur-[120px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(15,98,254,0.18),transparent_32%),linear-gradient(180deg,#f8fbff_0%,#eef5ff_38%,#f8fbff_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(38,116,255,0.28),transparent_28%),linear-gradient(180deg,#040915_0%,#071120_38%,#040915_100%)]" />
+        <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(15,98,254,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(15,98,254,0.05)_1px,transparent_1px)] [background-size:96px_96px]" />
+        <div className="absolute left-1/2 top-0 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[#0f62fe]/18 blur-[120px] dark:bg-[#0f62fe]/22" />
       </div>
 
       <header id="home" className="relative z-30">
         <div className="container-app pt-5">
-          <div className="rounded-full border border-border/80 bg-card/85 px-4 shadow-[0_20px_56px_-38px_var(--shadow-ambient-strong)] backdrop-blur-xl">
-            <div className="flex h-18 items-center justify-between gap-3">
+          <div className="rounded-full border border-[#d7e6ff] bg-white/78 px-4 shadow-[0_24px_54px_-40px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-[#183156] dark:bg-[#08101f]/84">
+            <div className="flex min-h-18 items-center justify-between gap-3 py-3">
               <Link href="/" className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-background-elevated/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-                  <Image src={logoSrc} alt="Sayarati Logo" width={32} height={32} sizes="32px" className="h-8 w-8" />
-                </div>
-                <div className="leading-none">
-                  <div className="font-display text-xl font-bold text-foreground">سيارتي</div>
-                  <div className="mt-1 text-[11px] uppercase tracking-[0.34em] text-primary/80">SAYARATI</div>
-                </div>
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#cfe1ff] bg-white dark:border-[#21406d] dark:bg-[#0d1830]">
+                  <Image src={logoSrc} alt="Sayarati" width={30} height={30} className="h-8 w-8" />
+                </span>
+                <span className="leading-none">
+                  <span className="block font-display text-xl font-black text-[#08172d] dark:text-white">
+                    سيارتي
+                  </span>
+                  <span className="mt-1 block text-[11px] font-bold tracking-[0.34em] text-[#0f62fe]">
+                    SAYARATI
+                  </span>
+                </span>
               </Link>
 
-              <nav className="hidden items-center gap-6 text-sm text-muted lg:flex">
+              <nav className="hidden items-center gap-6 text-sm font-semibold text-[#597191] dark:text-[#9ab0d4] lg:flex">
                 {navItems.map((item) => (
-                  <a key={item.href} href={item.href} className="transition hover:text-foreground">
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="transition hover:text-[#0f62fe] dark:hover:text-[#7db4ff]"
+                  >
                     {item.label}
                   </a>
                 ))}
               </nav>
 
-              <div className="hidden lg:flex">
-                <Link href="/choose-role" className="btn-primary h-11 px-6 text-sm">
-                  Start Now
+              <div className="hidden items-center gap-3 lg:flex">
+                <ThemeToggle />
+                <Link
+                  href="/choose-role"
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-[#0f62fe] px-6 text-sm font-bold text-white shadow-[0_22px_40px_-18px_rgba(15,98,254,0.8)] transition hover:-translate-y-0.5 hover:bg-[#0551df]"
+                >
+                  ابدأ الآن
                   <ArrowLeft className="h-4 w-4" aria-hidden />
                 </Link>
               </div>
 
-              <LandingMobileMenu navItems={navItems} />
+              <button
+                type="button"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d7e6ff] bg-white/90 text-[#0c2340] dark:border-[#21406d] dark:bg-[#0b1427] dark:text-white lg:hidden"
+                onClick={() => setMenuOpen((value) => !value)}
+                aria-label="فتح القائمة"
+                aria-expanded={menuOpen}
+              >
+                {menuOpen ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
+              </button>
             </div>
           </div>
+
+          {menuOpen ? (
+            <PremiumCard className="mt-3 p-4 lg:hidden">
+              <div className="flex flex-col gap-2">
+                {navItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-2xl px-4 py-3 text-sm font-bold text-[#0c2340] transition hover:bg-[#eef5ff] dark:text-white dark:hover:bg-[#0d1830]"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div className="pt-2">
+                  <ThemeToggle />
+                </div>
+                <Link
+                  href="/choose-role"
+                  className="mt-2 inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-[#0f62fe] px-5 text-sm font-bold text-white"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  ابدأ الآن
+                  <ArrowLeft className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </PremiumCard>
+          ) : null}
         </div>
       </header>
 
       <main className="relative z-10">
-        <section className="container-app grid min-h-[calc(100svh-92px)] items-center gap-12 pb-20 pt-10 lg:grid-cols-[0.92fr_minmax(0,1.08fr)] lg:pb-24">
+        <section className="container-app grid min-h-[calc(100svh-92px)] items-center gap-12 pb-20 pt-10 lg:grid-cols-[0.95fr_minmax(0,1.05fr)] lg:pb-24">
           <div className="order-2 space-y-8 lg:order-1">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.28em] text-primary uppercase">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#bfdbff] bg-white/80 px-4 py-2 text-[11px] font-extrabold tracking-[0.28em] text-[#0f62fe] dark:border-[#284675] dark:bg-[#091222]/88 dark:text-[#8dc0ff]">
               <Sparkles className="h-4 w-4" aria-hidden />
-              Premium Automotive 2026
+              منصة عربية لإدارة صيانة السيارة
             </div>
 
             <div className="space-y-5">
-              <h1 className="font-display text-4xl font-black leading-[1.02] text-foreground sm:text-6xl lg:text-[4.85rem]">
-                تجربة فاخرة لإدارة سيارتك
-                <span className="block text-primary">بوضوح أسرع وقرار أذكى.</span>
+              <h1 className="font-display text-4xl font-black leading-[1.05] text-[#08172d] dark:text-white sm:text-6xl lg:text-[4.65rem]">
+                قرارات صيانة أفضل
+                <span className="block text-[#0f62fe]">تبدأ بمعلومات أوضح.</span>
               </h1>
-              <p className="max-w-2xl text-base leading-8 text-muted sm:text-xl sm:leading-10">
-                من أول تنبيه وقائي إلى حجز الورشة وتوثيق ما تم، تمنحك سيارتي منصة عربية راقية
-                تجمع الصيانة والذكاء الاصطناعي والخدمات في رحلة واحدة تبدو حديثة وتعمل بجدية.
+              <p className="max-w-2xl text-base leading-8 text-[#5f7698] dark:text-[#9ab1d3] sm:text-xl sm:leading-10">
+                من سجل الصيانة وتوصيات الزيوت المناسبة إلى تشخيص الأعطال وحجز الخدمات،
+                تمنحك سيارتي رؤية أوضح وتحكماً أكبر في كل ما يخص سيارتك، لتتخذ قرارات
+                صيانة أكثر ذكاءً وتجنب التكاليف غير المتوقعة.
               </p>
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Link href="/choose-role" className="btn-primary h-14 px-8 text-base">
-                Start Now
+              <Link
+                href="/choose-role"
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[#0f62fe] px-8 text-base font-bold text-white shadow-[0_26px_44px_-18px_rgba(15,98,254,0.72)] transition hover:-translate-y-0.5 hover:bg-[#0551df]"
+              >
+                ابدأ الآن
                 <ArrowLeft className="h-5 w-5" aria-hidden />
               </Link>
-              <a href="#services" className="btn-secondary h-14 px-8 text-base">
-                استكشف الخدمات
-                <ArrowUpRight className="h-5 w-5" aria-hidden />
-              </a>
+              <Link
+                href="/customer/recommendations"
+                className="inline-flex h-14 items-center justify-center rounded-full border border-[#c7dcff] bg-white/88 px-8 text-base font-bold text-[#0c2340] transition hover:-translate-y-0.5 hover:border-[#0f62fe] hover:text-[#0f62fe] dark:border-[#21406d] dark:bg-[#091222]/84 dark:text-white dark:hover:border-[#4d8fff] dark:hover:text-[#7db4ff]"
+              >
+                اعرف الزيت المناسب لسيارتك
+              </Link>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              {heroMetrics.map((item) => (
-                <GlassCard key={item.label} className="p-4">
-                  <div className="text-2xl font-black text-primary">{item.value}</div>
-                  <div className="mt-2 text-sm text-muted">{item.label}</div>
-                </GlassCard>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {trustBadges.map((item) => (
+                <div
+                  key={item}
+                  className="inline-flex items-center gap-2 rounded-2xl border border-[#d7e6ff] bg-white/82 px-4 py-3 text-sm font-bold text-[#12325b] shadow-[0_20px_40px_-30px_rgba(15,23,42,0.28)] dark:border-[#1b345b] dark:bg-[#08111f]/88 dark:text-[#dce8ff]"
+                >
+                  <CheckCircle2 className="h-4 w-4 text-[#0f62fe]" aria-hidden />
+                  {item}
+                </div>
               ))}
             </div>
 
-            <div>
-              <div className="text-xs font-bold tracking-[0.3em] text-muted uppercase">Trusted Flow</div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {trustMarks.map((item) => (
-                  <span key={item} className="chip border-primary/15 bg-card/75 text-foreground/82">
-                    <span className="chip-dot bg-primary" />
-                    {item}
-                  </span>
-                ))}
-              </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                { value: "12K+", label: "ملف صيانة نشط" },
+                { value: "96%", label: "رضا المستخدمين" },
+                { value: "24/7", label: "إرشاد ذكي متواصل" },
+              ].map((item) => (
+                <PremiumCard key={item.label} className="p-5">
+                  <div className="text-3xl font-black text-[#0f62fe]">{item.value}</div>
+                  <p className="mt-2 text-sm text-[#5f7698] dark:text-[#9ab1d3]">{item.label}</p>
+                </PremiumCard>
+              ))}
             </div>
           </div>
 
-          <div className="order-1 mx-auto w-full max-w-[780px] lg:order-2">
-            <div className="relative">
-              <div className="absolute inset-x-[18%] top-14 h-32 rounded-full bg-primary/18 blur-[62px]" />
-              <div className="absolute -right-3 top-10 z-20 hidden w-44 rounded-[28px] border border-primary/20 bg-card/92 p-4 shadow-[0_28px_60px_-38px_var(--shadow-ambient-strong)] backdrop-blur-xl sm:block">
-                <div className="text-[11px] font-bold tracking-[0.24em] text-muted uppercase">Booking Confidence</div>
-                <div className="mt-3 text-2xl font-black text-foreground">+38%</div>
-                <div className="mt-1 text-sm leading-6 text-muted">تحويل أسرع من التوصية إلى الحجز الفعلي.</div>
-              </div>
-              <div className="absolute -left-4 bottom-8 z-20 hidden w-48 rounded-[28px] border border-primary/20 bg-[#12161b]/86 p-4 text-primary-foreground shadow-[0_28px_60px_-38px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:block">
-                <div className="flex items-center gap-2 text-primary">
-                  <BadgeCheck className="h-4 w-4" aria-hidden />
-                  <span className="text-[11px] font-bold tracking-[0.24em] uppercase">AI + Human Care</span>
+          <div className="order-1 lg:order-2">
+            <div className="relative mx-auto max-w-[760px]">
+              <div className="absolute -right-3 top-10 z-20 hidden w-48 rounded-[28px] border border-[#d7e6ff] bg-white/90 p-4 shadow-[0_30px_50px_-34px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-[#1f3a63] dark:bg-[#0a1324]/90 sm:block">
+                <div className="text-[11px] font-extrabold tracking-[0.22em] text-[#0f62fe]">
+                  SMART MAINTENANCE
                 </div>
-                <div className="mt-3 text-lg font-bold text-white">أعطال أوضح. قرارات أهدأ.</div>
+                <div className="mt-3 text-2xl font-black text-[#08172d] dark:text-white">
+                  +38%
+                </div>
+                <div className="mt-2 text-sm leading-6 text-[#5f7698] dark:text-[#9ab1d3]">
+                  سرعة أعلى في الانتقال من التشخيص إلى الحجز.
+                </div>
               </div>
 
-              <GlassCard className="overflow-hidden p-4 sm:p-5">
-                <div className="relative overflow-hidden rounded-[36px] border border-border bg-[linear-gradient(180deg,rgba(17,20,25,0.34),rgba(5,6,8,0.92))]">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_4%,rgba(255,255,255,0.15),transparent_26%),radial-gradient(circle_at_80%_20%,rgba(230,179,74,0.18),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(8,10,12,0.18)_44%,rgba(2,3,5,0.82)_100%)]" />
+              <div className="absolute -left-3 bottom-8 z-20 hidden w-52 rounded-[28px] border border-[#255bc9] bg-[#0f62fe] p-4 text-white shadow-[0_30px_56px_-34px_rgba(15,98,254,0.88)] backdrop-blur-xl sm:block">
+                <div className="flex items-center gap-2 text-white/90">
+                  <BadgeCheck className="h-4 w-4" aria-hidden />
+                  <span className="text-[11px] font-extrabold tracking-[0.22em]">
+                    AI + SERVICE
+                  </span>
+                </div>
+                <div className="mt-3 text-lg font-bold">توصيات أوضح وتجربة أهدأ.</div>
+              </div>
+
+              <PremiumCard className="overflow-hidden p-4 sm:p-5">
+                <div className="relative overflow-hidden rounded-[34px] border border-[#d7e6ff] bg-[linear-gradient(180deg,rgba(255,255,255,0.55),rgba(229,239,255,0.7))] dark:border-[#183156] dark:bg-[linear-gradient(180deg,rgba(11,20,39,0.74),rgba(4,9,21,0.96))]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(15,98,254,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0))] dark:bg-[radial-gradient(circle_at_top_left,rgba(15,98,254,0.3),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0))]" />
                   <Image
                     src={heroVehicle}
-                    alt="Premium vehicle showcased by Sayarati"
+                    alt="سيارة معروضة على منصة سيارتي"
                     width={1280}
                     height={864}
                     priority
-                    quality={75}
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="relative z-10 h-auto w-full object-cover saturate-[1.02] contrast-110 drop-shadow-[0_22px_48px_rgba(0,0,0,0.42)]"
+                    quality={85}
+                    sizes="(max-width: 1024px) 100vw, 52vw"
+                    className="relative z-10 h-auto w-full object-cover"
                   />
-                  <div className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(180deg,rgba(0,0,0,0.06)_0%,transparent_38%,rgba(0,0,0,0.58)_100%)]" />
+                  <div className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(180deg,rgba(248,251,255,0.04),transparent_42%,rgba(4,9,21,0.52)_100%)]" />
 
-                  <div className="absolute right-4 top-4 z-30 rounded-[24px] border border-border/80 bg-card/88 px-4 py-4 backdrop-blur-xl">
-                    <div className="text-[11px] font-bold tracking-[0.22em] text-muted uppercase">Garage View</div>
-                    <div className="mt-2 text-lg font-bold text-foreground">Executive Dashboard</div>
+                  <div className="absolute right-4 top-4 z-30 rounded-[22px] border border-white/40 bg-white/88 px-4 py-3 backdrop-blur-xl dark:border-white/10 dark:bg-[#091222]/86">
+                    <div className="text-[11px] font-extrabold tracking-[0.22em] text-[#0f62fe]">
+                      SAYARATI DASHBOARD
+                    </div>
+                    <div className="mt-2 text-base font-bold text-[#08172d] dark:text-white">
+                      رؤية موحدة لكل ما يخص سيارتك
+                    </div>
                   </div>
 
                   <div className="absolute bottom-4 left-4 right-4 z-30 grid gap-3 md:grid-cols-3">
                     {[
-                      { icon: Clock3, label: "زمن استجابة أسرع", value: "11 min" },
-                      { icon: MapPinned, label: "شبكة خدمات مرئية", value: "4 cities" },
-                      { icon: ShieldCheck, label: "ثقة وتجربة راقية", value: "Arabic first" },
+                      { icon: ShieldCheck, label: "سجل صيانة قابل للرجوع", value: "دائمًا" },
+                      { icon: Droplets, label: "مطابقة الزيت المناسب", value: "بدقة" },
+                      { icon: Wrench, label: "حجز خدمة موثوق", value: "بخطوات أقل" },
                     ].map((item) => {
                       const Icon = item.icon;
+
                       return (
                         <div
                           key={item.label}
-                          className="rounded-[24px] border border-border/80 bg-[#111418]/80 px-4 py-4 text-white backdrop-blur-xl"
+                          className="rounded-[24px] border border-white/15 bg-[#06101f]/78 px-4 py-4 text-white backdrop-blur-xl"
                         >
-                          <div className="flex items-center gap-2 text-primary">
+                          <div className="flex items-center gap-2 text-[#7db4ff]">
                             <Icon className="h-4 w-4" aria-hidden />
-                            <span className="text-[11px] font-bold tracking-[0.2em] uppercase">{item.value}</span>
+                            <span className="text-[11px] font-extrabold tracking-[0.2em]">
+                              {item.value}
+                            </span>
                           </div>
-                          <div className="mt-2 text-sm text-white/78">{item.label}</div>
+                          <div className="mt-2 text-sm text-white/82">{item.label}</div>
                         </div>
                       );
                     })}
                   </div>
                 </div>
-              </GlassCard>
+              </PremiumCard>
             </div>
           </div>
         </section>
 
-        <section id="services" className="border-t border-border/70 py-20 sm:py-24">
+        <section id="about" className="py-20 sm:py-24">
           <div className="container-app">
             <SectionHeader
-              eyebrow="Services"
-              title="خدمات تغطي دورة ملكية السيارة بالكامل"
-              description="كل جزء في سيارتي مصمم ليحوّل المعلومات المبعثرة إلى قرارات محسوبة وتجربة خدمة تبدو أكثر أناقة وانضباطًا."
+              label="ABOUT SAYARATI"
+              title="منصة صيانة ذكية بواجهة عربية واضحة"
+              description="سيارتي ليست مجرد صفحة معلومات، بل منصة تشغيلية تساعدك على متابعة الصيانة، اختيار الزيت المناسب، فهم الأعطال، حجز الميكانيكي، والوصول إلى قطع الغيار من مكان واحد."
+            />
+
+            <div className="mt-14 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+              <PremiumCard className="p-7 sm:p-8">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {aboutItems.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-[26px] border border-[#dce9ff] bg-[#f9fbff] p-5 dark:border-[#183156] dark:bg-[#0b1426]"
+                    >
+                      <div className="text-lg font-bold text-[#08172d] dark:text-white">
+                        {item.title}
+                      </div>
+                      <p className="mt-3 text-sm leading-7 text-[#5f7698] dark:text-[#9ab1d3]">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </PremiumCard>
+
+              <PremiumCard className="relative overflow-hidden p-7 sm:p-8">
+                <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(15,98,254,0.18),transparent_62%)]" />
+                <div className="relative">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#cfe1ff] bg-white/80 px-4 py-2 text-xs font-extrabold text-[#0f62fe] dark:border-[#284675] dark:bg-[#0c1730]">
+                    <Gauge className="h-4 w-4" aria-hidden />
+                    تجربة تشغيلية متكاملة
+                  </div>
+                  <h3 className="mt-6 text-2xl font-black text-[#08172d] dark:text-white sm:text-3xl">
+                    كل قرار صيانة يصبح أسهل عندما تكون البيانات منظمة.
+                  </h3>
+                  <p className="mt-4 text-base leading-8 text-[#5f7698] dark:text-[#9ab1d3]">
+                    بفضل التصميم البسيط والمنطق العملي، تمنحك سيارتي طبقة واضحة بينك وبين
+                    التعقيد المعتاد في الصيانة. ترى ما حدث، ما يجب فعله، ومن الأنسب لتنفيذه.
+                  </p>
+
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    {[
+                      "معلومات موحدة بدل المحادثات المتناثرة",
+                      "واجهة عربية RTL جاهزة للاستخدام اليومي",
+                      "قرارات أسرع مبنية على سجل واضح",
+                      "تجربة شراء وخدمة أكثر احترافية",
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-2xl border border-[#dce9ff] bg-white/82 px-4 py-4 text-sm font-semibold text-[#12325b] dark:border-[#1b345b] dark:bg-[#091222]/86 dark:text-[#dce8ff]"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </PremiumCard>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="py-20 sm:py-24">
+          <div className="container-app">
+            <SectionHeader
+              label="FEATURES"
+              title="كل ما تحتاجه لسيارتك في منصة واحدة"
+              description="واجهة موحدة تجمع إدارة المعلومات، التشخيص، الحجز، والشراء في تجربة حديثة بتفاصيل بصرية نظيفة وتأثيرات تفاعلية خفيفة."
             />
 
             <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {services.map((service) => {
-                const Icon = service.icon;
+              {featureCards.map((feature) => {
+                const Icon = feature.icon;
+
                 return (
-                  <GlassCard key={service.title} className="group h-full p-6 sm:p-7">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-[22px] border border-primary/20 bg-primary/10 text-primary transition duration-300 group-hover:-translate-y-1 group-hover:scale-105">
-                        <Icon className="h-7 w-7" aria-hidden />
-                      </div>
-                      <span className="rounded-full border border-primary/18 bg-primary/10 px-3 py-1 text-[11px] font-bold tracking-[0.2em] text-primary uppercase">
-                        {service.stat}
-                      </span>
+                  <PremiumCard
+                    key={feature.title}
+                    className="group h-full p-7 transition duration-300 hover:-translate-y-1.5 hover:border-[#0f62fe]/40 hover:shadow-[0_34px_80px_-46px_rgba(15,98,254,0.34)]"
+                  >
+                    <div className="flex h-14 w-14 items-center justify-center rounded-[20px] border border-[#cce0ff] bg-[#eef5ff] text-[#0f62fe] transition duration-300 group-hover:scale-105 group-hover:bg-[#0f62fe] group-hover:text-white dark:border-[#21406d] dark:bg-[#0c1730]">
+                      <Icon className="h-7 w-7" aria-hidden />
                     </div>
-                    <div className="mt-6 text-xs font-bold tracking-[0.24em] text-muted uppercase">{service.eyebrow}</div>
-                    <h3 className="mt-3 text-2xl font-bold text-foreground">{service.title}</h3>
-                    <p className="mt-4 text-sm leading-8 text-muted">{service.description}</p>
-                  </GlassCard>
+                    <h3 className="mt-6 text-2xl font-black text-[#08172d] dark:text-white">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-8 text-[#5f7698] dark:text-[#9ab1d3]">
+                      {feature.description}
+                    </p>
+                  </PremiumCard>
                 );
               })}
             </div>
           </div>
         </section>
 
-        <section id="timeline" className="border-t border-border/70 py-20 sm:py-24">
+        <section id="assistant" className="py-20 sm:py-24">
           <div className="container-app">
             <SectionHeader
-              eyebrow="Ownership Timeline"
-              title="رحلة تشغيلية تبدأ قبل العطل ولا تنتهي عند الحجز"
-              description="تتابع سيارتي كامل المسار من تجهيز ملف المركبة حتى توثيق ما تم، لتبقى صورة السيارة واضحة في كل قرار قادم."
+              label="AI ASSISTANT"
+              title="مساعد ذكي يفهم سيارتك"
+              description="يترجم الأعراض إلى مؤشرات مفهومة، يساعدك على تقدير الاحتمالات، ويقترح عليك التصرف الأنسب قبل أن تتحول المشكلة إلى تكلفة أكبر."
             />
 
-            <div className="relative mt-16 grid gap-6 lg:grid-cols-4">
-              <div className="pointer-events-none absolute right-8 top-8 hidden h-[calc(100%-4rem)] w-px bg-[linear-gradient(180deg,rgba(230,179,74,0.42),transparent)] lg:block" />
-              {timeline.map((step) => (
-                <GlassCard key={step.phase} className="relative p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-lg font-black text-primary">
-                      {step.phase}
-                    </div>
-                    <div className="text-xl font-bold text-foreground">{step.title}</div>
+            <div className="mt-14 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+              <PremiumCard className="overflow-hidden p-7 sm:p-8">
+                <div className="rounded-[30px] border border-[#dce9ff] bg-[linear-gradient(180deg,#f9fbff_0%,#edf5ff_100%)] p-6 dark:border-[#183156] dark:bg-[linear-gradient(180deg,#0b1426_0%,#071120_100%)]">
+                  <div className="flex items-center gap-3 text-[#0f62fe]">
+                    <Bot className="h-6 w-6" aria-hidden />
+                    <span className="text-sm font-extrabold tracking-[0.24em]">AI INSIGHT FLOW</span>
                   </div>
-                  <p className="mt-5 text-sm leading-8 text-muted">{step.description}</p>
-                </GlassCard>
+
+                  <div className="mt-8 space-y-4">
+                    {[
+                      { title: "رصد الأعراض", text: "مثل صوت غير معتاد، استهلاك مرتفع، أو اهتزاز مفاجئ." },
+                      { title: "تحديد الأسباب", text: "اقتراح الاحتمالات الأقرب بناءً على الأعراض الموصوفة." },
+                      { title: "توجيه للحل", text: "إظهار ما إذا كانت الحالة عاجلة أو يمكن مراقبتها مؤقتًا." },
+                    ].map((item, index) => (
+                      <div
+                        key={item.title}
+                        className="flex gap-4 rounded-[24px] border border-[#dce9ff] bg-white/88 p-5 dark:border-[#183156] dark:bg-[#091222]/84"
+                      >
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0f62fe] text-sm font-black text-white">
+                          0{index + 1}
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold text-[#08172d] dark:text-white">
+                            {item.title}
+                          </div>
+                          <p className="mt-2 text-sm leading-7 text-[#5f7698] dark:text-[#9ab1d3]">
+                            {item.text}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </PremiumCard>
+
+              <div className="grid gap-6">
+                {assistantPoints.map((item) => (
+                  <PremiumCard key={item} className="p-6">
+                    <div className="flex items-start gap-4">
+                      <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#eef5ff] text-[#0f62fe] dark:bg-[#0c1730] dark:text-[#8dc0ff]">
+                        <Sparkles className="h-5 w-5" aria-hidden />
+                      </span>
+                      <p className="text-base leading-8 text-[#12325b] dark:text-[#dce8ff]">{item}</p>
+                    </div>
+                  </PremiumCard>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="oils" className="py-20 sm:py-24">
+          <div className="container-app">
+            <SectionHeader
+              label="RECOMMENDED OIL"
+              title="الزيت المناسب لسيارتك"
+              description="بطاقات منتجات فعلية من بيانات المتجر داخل المشروع، مع صورة المنتج والعلامة التجارية واللزوجة ورابط سريع للوصول إلى المتجر."
+            />
+
+            <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+              {oilProducts.map((product) => (
+                <PremiumCard
+                  key={product.id}
+                  className="group overflow-hidden transition duration-300 hover:-translate-y-1.5 hover:border-[#0f62fe]/40 hover:shadow-[0_34px_80px_-48px_rgba(15,98,254,0.35)]"
+                >
+                  <div className="relative overflow-hidden border-b border-[#dce9ff] bg-[#f6faff] dark:border-[#183156] dark:bg-[#081120]">
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      width={768}
+                      height={768}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                      className="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                    />
+                  </div>
+                  <div className="space-y-4 p-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-[#eef5ff] px-3 py-1 text-xs font-extrabold text-[#0f62fe] dark:bg-[#0c1730] dark:text-[#8dc0ff]">
+                        {product.brand}
+                      </span>
+                      <span className="rounded-full bg-[#edf2fb] px-3 py-1 text-xs font-bold text-[#45658a] dark:bg-[#111d33] dark:text-[#a6bfdf]">
+                        {product.viscosity}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-black text-[#08172d] dark:text-white">
+                        {product.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-[#5f7698] dark:text-[#9ab1d3]">
+                        {product.packageSize} • {formatDaPrice(product.priceDa)}
+                      </p>
+                    </div>
+                    <Link
+                      href="/customer/store"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-full bg-[#0f62fe] px-4 text-sm font-bold text-white transition hover:bg-[#0551df]"
+                    >
+                      عرض في المتجر
+                    </Link>
+                  </div>
+                </PremiumCard>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="testimonials" className="border-t border-border/70 py-20 sm:py-24">
+        <section id="how-it-works" className="py-20 sm:py-24">
           <div className="container-app">
             <SectionHeader
-              eyebrow="Testimonials"
-              title="ثقة مبنية على وضوح فعلي في الرحلة اليومية"
-              description="الانطباع الفاخر مهم، لكن القيمة الحقيقية تظهر عندما يفهم المستخدم ماذا يجب أن يفعل بسيارته ومتى ولماذا."
+              label="HOW IT WORKS"
+              title="كيف تعمل سيارتي؟"
+              description="رحلة بسيطة وواضحة تبدأ بإضافة السيارة وتنتهي بإدارة سجل صيانتها بذكاء أعلى ووضوح أكبر."
+            />
+
+            <div className="relative mt-14 grid gap-6 lg:grid-cols-4">
+              <div className="pointer-events-none absolute right-[6.75rem] top-14 hidden h-px w-[calc(100%-13.5rem)] bg-[linear-gradient(90deg,rgba(15,98,254,0.08),rgba(15,98,254,0.4),rgba(15,98,254,0.08))] lg:block" />
+              {workSteps.map((step) => (
+                <PremiumCard key={step.step} className="relative p-6">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0f62fe] text-lg font-black text-white shadow-[0_18px_34px_-16px_rgba(15,98,254,0.75)]">
+                    {step.step}
+                  </div>
+                  <h3 className="mt-6 text-2xl font-black text-[#08172d] dark:text-white">
+                    {step.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-8 text-[#5f7698] dark:text-[#9ab1d3]">
+                    {step.description}
+                  </p>
+                </PremiumCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="testimonials" className="py-20 sm:py-24">
+          <div className="container-app">
+            <SectionHeader
+              label="TESTIMONIALS"
+              title="ما الذي يقوله مستخدمو سيارتي؟"
+              description="بطاقات تقييم مصممة بأسلوب هادئ وفاخر، تركز على أثر المنصة في اتخاذ القرار اليومي المتعلق بالصيانة."
             />
 
             <div className="mt-14 grid gap-6 lg:grid-cols-3">
-              {testimonials.map((testimonial) => (
-                <GlassCard key={testimonial.name} className="h-full p-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <Image
-                        src={testimonial.photo}
-                        alt={testimonial.name}
-                        width={96}
-                        height={96}
-                        className="h-16 w-16 rounded-2xl object-cover ring-1 ring-primary/20"
-                      />
-                      <div>
-                        <div className="text-lg font-bold text-foreground">{testimonial.name}</div>
-                        <div className="mt-1 text-sm text-muted">{testimonial.role}</div>
+              {testimonials.map((testimonial, index) => (
+                <PremiumCard key={testimonial.name} className="h-full p-7">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-xl font-black text-[#08172d] dark:text-white">
+                        {testimonial.name}
+                      </div>
+                      <div className="mt-2 text-sm font-semibold text-[#0f62fe]">
+                        {testimonial.role}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 text-primary">
-                      {Array.from({ length: 5 }, (_, index) => (
-                        <Star key={`${testimonial.name}-${index}`} className="h-4 w-4 fill-current" aria-hidden />
+                    <div className="flex items-center gap-1 text-[#0f62fe]">
+                      {Array.from({ length: 5 }, (_, starIndex) => (
+                        <Star
+                          key={`${testimonial.name}-${starIndex}`}
+                          className="h-4 w-4 fill-current"
+                          aria-hidden
+                        />
                       ))}
                     </div>
                   </div>
-                  <p className="mt-6 text-sm leading-8 text-muted">&quot;{testimonial.quote}&quot;</p>
-                </GlassCard>
+
+                  <p className="mt-6 text-base leading-8 text-[#12325b] dark:text-[#dce8ff]">
+                    &quot;{testimonial.quote}&quot;
+                  </p>
+
+                  <div className="mt-8 flex items-center gap-3 rounded-2xl border border-[#dce9ff] bg-[#f9fbff] px-4 py-3 dark:border-[#183156] dark:bg-[#0b1426]">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#0f62fe] text-white">
+                      {index + 1}
+                    </span>
+                    <span className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">
+                      تقييم موثوق من مستخدم فعلي للمنصة
+                    </span>
+                  </div>
+                </PremiumCard>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="contact" className="border-t border-border/70 py-20 sm:py-24">
+        <section id="contact" className="py-20 sm:py-24">
           <div className="container-app">
             <SectionHeader
-              eyebrow="Contact, FAQ & Coverage"
-              title="تواصل أوضح، إجابات أسرع، وخريطة خدمة قابلة للتوسع"
-              description="قسم نهائي أكثر ثراءً يجمع التواصل، الأسئلة الشائعة، ومشهدًا بصريًا لنقاط التغطية والخدمة الحالية."
+              label="CONTACT"
+              title="تواصل معنا"
+              description="مساحة اتصال مباشرة بتصميم واضح ومريح بصريًا، مع نموذج بسيط جاهز لالتقاط استفسارات العملاء."
             />
 
-            <div className="mt-14 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="mt-14 grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
               <div className="grid gap-6">
-                <GlassCard className="p-6 sm:p-7">
+                <PremiumCard className="p-7">
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef5ff] text-[#0f62fe] dark:bg-[#0c1730] dark:text-[#8dc0ff]">
                       <Mail className="h-5 w-5" aria-hidden />
                     </span>
                     <div>
-                      <div className="text-xs font-bold tracking-[0.22em] text-muted uppercase">Direct Contact</div>
-                      <div className="mt-1 text-2xl font-bold text-foreground">دعنا نرتب تجربتك</div>
-                    </div>
-                  </div>
-                  <div className="mt-6 grid gap-3 text-sm text-muted">
-                    <div className="rounded-[22px] border border-border/80 bg-card-2/70 px-4 py-4">
-                      <span className="block text-xs font-bold tracking-[0.2em] text-primary uppercase">Email</span>
-                      <span className="mt-2 block text-base font-semibold text-foreground">{SITE.email}</span>
-                    </div>
-                    <div className="rounded-[22px] border border-border/80 bg-card-2/70 px-4 py-4">
-                      <span className="block text-xs font-bold tracking-[0.2em] text-primary uppercase">Phone</span>
-                      <span className="mt-2 block text-base font-semibold text-foreground">{SITE.phone}</span>
-                    </div>
-                    <div className="rounded-[22px] border border-border/80 bg-card-2/70 px-4 py-4">
-                      <span className="block text-xs font-bold tracking-[0.2em] text-primary uppercase">City</span>
-                      <span className="mt-2 block text-base font-semibold text-foreground">{SITE.city}</span>
-                    </div>
-                  </div>
-                </GlassCard>
-
-                <GlassCard className="p-6 sm:p-7">
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-                      <MessageSquareText className="h-5 w-5" aria-hidden />
-                    </span>
-                    <div>
-                      <div className="text-xs font-bold tracking-[0.22em] text-muted uppercase">Ask Anything</div>
-                      <div className="mt-1 text-2xl font-bold text-foreground">أرسل رسالتك</div>
+                      <div className="text-sm font-extrabold text-[#0f62fe]">قناة تواصل مباشرة</div>
+                      <div className="mt-1 text-2xl font-black text-[#08172d] dark:text-white">
+                        فريق سيارتي جاهز لمساعدتك
+                      </div>
                     </div>
                   </div>
 
-                  <form className="mt-6 grid gap-5">
-                    <label className="grid gap-2 text-sm text-muted">
-                      <span>Name</span>
-                      <input type="text" className="input" placeholder="اكتب اسمك" />
+                  <div className="mt-6 grid gap-4">
+                    <div className="rounded-[24px] border border-[#dce9ff] bg-[#f9fbff] p-4 dark:border-[#183156] dark:bg-[#0b1426]">
+                      <div className="flex items-center gap-3">
+                        <Mail className="h-4 w-4 text-[#0f62fe]" aria-hidden />
+                        <span className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">البريد</span>
+                      </div>
+                      <a
+                        href={`mailto:${SITE.email}`}
+                        className="mt-2 block text-base font-bold text-[#08172d] dark:text-white"
+                      >
+                        {SITE.email}
+                      </a>
+                    </div>
+
+                    <div className="rounded-[24px] border border-[#dce9ff] bg-[#f9fbff] p-4 dark:border-[#183156] dark:bg-[#0b1426]">
+                      <div className="flex items-center gap-3">
+                        <Phone className="h-4 w-4 text-[#0f62fe]" aria-hidden />
+                        <span className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">الهاتف</span>
+                      </div>
+                      <a
+                        href={`tel:${SITE.phone}`}
+                        className="mt-2 block text-base font-bold text-[#08172d] dark:text-white"
+                      >
+                        {SITE.phone}
+                      </a>
+                    </div>
+
+                    <div className="rounded-[24px] border border-[#dce9ff] bg-[#f9fbff] p-4 dark:border-[#183156] dark:bg-[#0b1426]">
+                      <div className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">المدينة</div>
+                      <div className="mt-2 text-base font-bold text-[#08172d] dark:text-white">
+                        {SITE.city}
+                      </div>
+                    </div>
+                  </div>
+                </PremiumCard>
+              </div>
+
+              <PremiumCard className="p-7 sm:p-8">
+                <div className="grid gap-5">
+                  <div>
+                    <div className="text-sm font-extrabold text-[#0f62fe]">نموذج التواصل</div>
+                    <h3 className="mt-2 text-3xl font-black text-[#08172d] dark:text-white">
+                      اترك رسالتك وسنعود إليك
+                    </h3>
+                  </div>
+
+                  <form className="grid gap-5">
+                    <label className="grid gap-2">
+                      <span className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">Name</span>
+                      <div className="relative">
+                        <User className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6f88ac]" aria-hidden />
+                        <input
+                          type="text"
+                          className="h-[52px] w-full rounded-2xl border border-[#d6e5ff] bg-[#f9fbff] pr-11 text-sm text-[#08172d] outline-none transition placeholder:text-[#8aa3c4] focus:border-[#0f62fe] focus:bg-white focus:ring-4 focus:ring-[#0f62fe]/10 dark:border-[#183156] dark:bg-[#0b1426] dark:text-white dark:placeholder:text-[#6f88ac]"
+                          placeholder="اكتب اسمك"
+                        />
+                      </div>
                     </label>
-                    <label className="grid gap-2 text-sm text-muted">
-                      <span>Email</span>
-                      <input type="email" className="input" placeholder="name@example.com" />
+
+                    <label className="grid gap-2">
+                      <span className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">Email</span>
+                      <div className="relative">
+                        <Mail className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6f88ac]" aria-hidden />
+                        <input
+                          type="email"
+                          className="h-[52px] w-full rounded-2xl border border-[#d6e5ff] bg-[#f9fbff] pr-11 text-sm text-[#08172d] outline-none transition placeholder:text-[#8aa3c4] focus:border-[#0f62fe] focus:bg-white focus:ring-4 focus:ring-[#0f62fe]/10 dark:border-[#183156] dark:bg-[#0b1426] dark:text-white dark:placeholder:text-[#6f88ac]"
+                          placeholder="name@example.com"
+                        />
+                      </div>
                     </label>
-                    <label className="grid gap-2 text-sm text-muted">
-                      <span>Message</span>
-                      <textarea className="textarea min-h-36" placeholder="اكتب رسالتك هنا" />
+
+                    <label className="grid gap-2">
+                      <span className="text-sm font-bold text-[#45658a] dark:text-[#9ab1d3]">Message</span>
+                      <div className="relative">
+                        <MessageSquareText className="pointer-events-none absolute right-4 top-4 h-4 w-4 text-[#6f88ac]" aria-hidden />
+                        <textarea
+                          className="min-h-40 w-full rounded-2xl border border-[#d6e5ff] bg-[#f9fbff] pr-11 pt-3 text-sm text-[#08172d] outline-none transition placeholder:text-[#8aa3c4] focus:border-[#0f62fe] focus:bg-white focus:ring-4 focus:ring-[#0f62fe]/10 dark:border-[#183156] dark:bg-[#0b1426] dark:text-white dark:placeholder:text-[#6f88ac]"
+                          placeholder="اكتب رسالتك هنا"
+                        />
+                      </div>
                     </label>
-                    <button type="submit" className="btn-primary h-12">
+
+                    <button
+                      type="submit"
+                      className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-[#0f62fe] px-6 text-sm font-bold text-white shadow-[0_24px_42px_-20px_rgba(15,98,254,0.74)] transition hover:bg-[#0551df]"
+                    >
                       إرسال الرسالة
                       <ArrowLeft className="h-4 w-4" aria-hidden />
                     </button>
                   </form>
-                </GlassCard>
-              </div>
-
-              <div className="grid gap-6">
-                <GlassCard className="overflow-hidden p-6 sm:p-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-bold tracking-[0.22em] text-muted uppercase">Service Coverage</div>
-                      <div className="mt-2 text-2xl font-bold text-foreground">خريطة شبكة الخدمة الحالية</div>
-                    </div>
-                    <span className="rounded-full border border-primary/18 bg-primary/10 px-3 py-1 text-[11px] font-bold tracking-[0.2em] text-primary uppercase">
-                      Expanding 2026
-                    </span>
-                  </div>
-
-                  <div className="relative mt-6 h-[320px] overflow-hidden rounded-[30px] border border-border bg-[linear-gradient(180deg,rgba(18,21,26,0.84),rgba(7,9,12,0.98))]">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_14%,rgba(230,179,74,0.14),transparent_18%),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:auto,64px_64px,64px_64px]" />
-                    {mapCities.map((city) => (
-                      <div
-                        key={city.name}
-                        className="absolute flex -translate-y-1/2 items-center gap-3"
-                        style={{ top: city.top, right: city.right }}
-                      >
-                        <span className="inline-flex h-3 w-3 rounded-full bg-primary shadow-[0_0_0_6px_rgba(230,179,74,0.12),0_0_24px_rgba(230,179,74,0.42)]" />
-                        <span className="rounded-full border border-primary/20 bg-[#12161b]/88 px-3 py-1 text-xs font-bold tracking-[0.16em] text-white uppercase backdrop-blur-md">
-                          {city.name}
-                        </span>
-                      </div>
-                    ))}
-                    <div className="absolute bottom-4 left-4 right-4 grid gap-3 md:grid-cols-3">
-                      {[
-                        "Onboarding workshops",
-                        "Premium maintenance journeys",
-                        "Arabic-first support flow",
-                      ].map((item) => (
-                        <div key={item} className="rounded-[22px] border border-border/80 bg-[#111418]/82 px-4 py-4 text-sm text-white/78 backdrop-blur-xl">
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </GlassCard>
-
-                <GlassCard className="p-6 sm:p-7">
-                  <div className="text-xs font-bold tracking-[0.22em] text-muted uppercase">FAQ</div>
-                  <div className="mt-2 text-2xl font-bold text-foreground">أسئلة متكررة قبل الانطلاق</div>
-                  <div className="mt-6 grid gap-3">
-                    {faqs.map((item) => (
-                      <div key={item.question} className="rounded-[24px] border border-border/80 bg-card-2/72 px-5 py-5">
-                        <div className="flex items-center gap-3 text-foreground">
-                          <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
-                            <BadgeCheck className="h-4 w-4" aria-hidden />
-                          </span>
-                          <h3 className="text-base font-bold">{item.question}</h3>
-                        </div>
-                        <p className="mt-4 text-sm leading-8 text-muted">{item.answer}</p>
-                      </div>
-                    ))}
-                  </div>
-                </GlassCard>
-              </div>
+                </div>
+              </PremiumCard>
             </div>
           </div>
         </section>
 
         <section className="pb-20 pt-4 sm:pb-24">
           <div className="container-app">
-            <div className="relative overflow-hidden rounded-[40px] border border-border bg-card px-6 py-10 shadow-[0_24px_72px_-46px_var(--shadow-ambient-strong)] backdrop-blur-xl sm:px-10 sm:py-14">
-              <div className="absolute left-1/2 top-0 h-44 w-[28rem] -translate-x-1/2 rounded-full bg-primary/14 blur-[72px]" />
+            <div className="relative overflow-hidden rounded-[40px] border border-[#bdd7ff] bg-[linear-gradient(135deg,#0f62fe_0%,#0a3a99_100%)] px-6 py-12 text-white shadow-[0_38px_100px_-48px_rgba(15,98,254,0.8)] sm:px-10 sm:py-16">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.24),transparent_28%)]" />
               <div className="relative z-10 mx-auto max-w-3xl text-center">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold tracking-[0.2em] text-primary uppercase">
-                  Final CTA
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-extrabold tracking-[0.22em]">
+                  FINAL CTA
                 </div>
-                <h2 className="mt-6 font-display text-3xl font-bold leading-tight text-foreground sm:text-5xl">
-                  ابدأ من الدور المناسب لك واترك الباقي لتجربة صُممت بعناية.
+                <h2 className="mt-6 font-display text-3xl font-black leading-tight sm:text-5xl">
+                  ابدأ إدارة سيارتك بطريقة أكثر ذكاءً
                 </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-                  شاشة الاختيار هي بوابة الرحلة الجديدة: أوضح، أفخم، وأكثر جاهزية لتجربة العميل أو
-                  الميكانيكي في 2026.
+                <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
+                  أنشئ حسابك وابدأ في متابعة صيانة سيارتك من مكان واحد.
                 </p>
-                <div className="mt-8 flex justify-center">
-                  <Link href="/choose-role" className="btn-primary h-14 px-8 text-base">
-                    Choose Your Role
+                <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                  <Link
+                    href="/choose-role"
+                    className="inline-flex h-[52px] items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-bold text-[#0f62fe] transition hover:bg-[#edf5ff]"
+                  >
+                    ابدأ الآن
                     <ArrowLeft className="h-5 w-5" aria-hidden />
                   </Link>
+                  <a
+                    href="#about"
+                    className="inline-flex h-[52px] items-center justify-center rounded-full border border-white/22 bg-white/10 px-8 text-base font-bold text-white transition hover:bg-white/16"
+                  >
+                    استكشف المنصة
+                  </a>
                 </div>
               </div>
             </div>
@@ -612,13 +918,30 @@ export default function LandingUI() {
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-border/70 pb-10 pt-8">
-        <div className="container-app flex flex-col items-center justify-between gap-4 text-sm text-muted md:flex-row">
-          <div>© 2026 Sayarati</div>
-          <div className="flex flex-wrap items-center justify-center gap-5">
-            <span>Premium Automotive Platform</span>
-            <span>{SITE.city}</span>
-            <span>{SITE.phone}</span>
+      <footer className="relative z-10 border-t border-[#dce9ff] pb-10 pt-8 dark:border-[#142947]">
+        <div className="container-app flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="font-display text-xl font-black text-[#08172d] dark:text-white">
+              سيارتي
+            </div>
+            <div className="mt-2 text-sm text-[#5f7698] dark:text-[#9ab1d3]">
+              منصة عربية فاخرة لإدارة صيانة السيارة بوضوح أكبر.
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-5 text-sm font-semibold text-[#45658a] dark:text-[#9ab1d3]">
+            <a href="#about" className="transition hover:text-[#0f62fe]">
+              About
+            </a>
+            <a href="#contact" className="transition hover:text-[#0f62fe]">
+              Contact
+            </a>
+            <Link href="/privacy" className="transition hover:text-[#0f62fe]">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="transition hover:text-[#0f62fe]">
+              Terms of Service
+            </Link>
           </div>
         </div>
       </footer>
