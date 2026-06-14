@@ -27,8 +27,16 @@ export default function Header() {
   const pathname = usePathname();
   const { t } = useTranslation();
 
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [{ role, authed }, setAuthState] = useState<AuthState>({ role: null, authed: false });
+
+  const effectiveRole = mounted ? role : null;
+  const effectiveAuthed = mounted ? authed : false;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const sync = () => {
@@ -64,7 +72,7 @@ export default function Header() {
   }, [open]);
 
   const items: NavItem[] = useMemo(() => {
-    if (!authed) {
+    if (!effectiveAuthed) {
       return [
         { href: "/choose-role", label: t("nav.chooseRole") },
         { href: "/auth/login", label: t("nav.login") },
@@ -72,7 +80,7 @@ export default function Header() {
       ];
     }
 
-    if (role === "mechanic") {
+    if (effectiveRole === "mechanic") {
       return [
         { href: "/mechanic", label: t("nav.dashboard") },
         { href: "/mechanic/requests", label: t("nav.requests") },
@@ -85,7 +93,7 @@ export default function Header() {
       { href: "/customer/find", label: t("nav.nearbyMechanic") },
       { href: "/customer/request", label: t("nav.requestService") },
     ];
-  }, [authed, role, t]);
+  }, [effectiveAuthed, effectiveRole, t]);
 
   if (pathname === "/" || pathname === "/landing") {
     return null;
@@ -137,7 +145,7 @@ export default function Header() {
               <LanguageSwitcher />
               <ThemeSwitcher />
 
-              {!authed ? (
+              {!effectiveAuthed ? (
                 <Link href="/choose-role" className="btn-primary h-10 gap-2 px-4 text-sm">
                   <Sparkles className="h-4 w-4" aria-hidden />
                   {t("nav.startNow")}
@@ -152,7 +160,7 @@ export default function Header() {
                   }}
                 >
                   {t("nav.logout")}
-                  {role ? ` (${roleLabel(role, t)})` : ""}
+                  {effectiveRole ? ` (${roleLabel(effectiveRole, t)})` : ""}
                 </button>
               )}
             </div>
@@ -204,7 +212,7 @@ export default function Header() {
                     </Link>
                   ))}
 
-                  {!authed ? (
+                  {!effectiveAuthed ? (
                     <Link
                       href="/choose-role"
                       className="btn-primary neon-ring mt-2 h-11 gap-2 rounded-2xl px-4 text-sm"
