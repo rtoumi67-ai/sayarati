@@ -28,9 +28,7 @@ export default function Header() {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
-  const [{ role, authed }, setAuthState] = useState<AuthState>(() =>
-    typeof window === "undefined" ? { role: null, authed: false } : readAuthState(),
-  );
+  const [{ role, authed }, setAuthState] = useState<AuthState>({ role: null, authed: false });
 
   useEffect(() => {
     const sync = () => {
