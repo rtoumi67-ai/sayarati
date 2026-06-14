@@ -1,0 +1,597 @@
+{
+  "meta": {
+    "title": "Sayarati | Premium Automotive Services",
+    "description": "Sayarati is a premium car-services platform: booking, maintenance, and everything your car needs — with a futuristic Garage OS experience.",
+    "landingTitle": "Home | Sayarati",
+    "pages": {
+      "landing": "Home | Sayarati",
+      "chooseRole": "Choose role | Sayarati",
+      "login": "Sign in | Sayarati",
+      "register": "Create account | Sayarati",
+      "customer": "Customer dashboard | Sayarati",
+      "customerFind": "Nearby mechanics | Sayarati",
+      "customerRequest": "Request a service | Sayarati",
+      "carInfo": "Car details | Sayarati",
+      "mechanic": "Mechanic dashboard | Sayarati",
+      "mechanicRequests": "Requests | Sayarati",
+      "mechanicEarnings": "Earnings | Sayarati"
+    }
+  },
+  "language": {
+    "ar": "العربية",
+    "en": "English",
+    "fr": "Français"
+  },
+  "site": {
+    "city": "El Taref"
+  },
+  "units": {
+    "km": "km",
+    "sar": "SAR",
+    "min": "min"
+  },
+  "roles": {
+    "customer": "Customer",
+    "mechanic": "Mechanic"
+  },
+  "serviceKinds": {
+    "battery": "Battery",
+    "tire": "Tire change",
+    "towing": "Towing",
+    "maintenance": "Maintenance",
+    "inspection": "Inspection",
+    "other": "Other"
+  },
+  "nav": {
+    "chooseRole": "Choose role",
+    "login": "Sign in",
+    "register": "Create account",
+    "dashboard": "Dashboard",
+    "requests": "Requests",
+    "earnings": "Earnings",
+    "nearbyMechanic": "Nearby mechanics",
+    "requestService": "Request a service",
+    "startNow": "Get started",
+    "logout": "Log out",
+    "openMenu": "Open menu",
+    "navigation": "Navigation",
+    "menu": "Menu"
+  },
+  "auth": {
+    "currentRole": "Current role: {{role}}",
+    "chooseRoleFirst": "Choose your role first",
+    "goChooseRole": "Go to role selection",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "phone": "Phone number",
+    "phonePlaceholder": "05xxxxxxxx",
+    "name": "Name",
+    "namePlaceholder": "Example: Ahmed",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "creatingAccount": "Creating account…",
+    "createAccount": "Create a new account",
+    "createAccountShort": "Create account",
+    "continueWithGoogle": "Continue with Google",
+    "haveAccount": "I already have an account (Sign in)",
+    "skipMvp": "Skip (MVP)",
+    "loginFlowNote": "This is an initial UI flow. Later we can add OTP / password / real authentication.",
+    "registerFlowNote": "Registration will later be connected to a database with phone verification (OTP).",
+    "checkEmailNotice": "Your account was created. Check your email to confirm it, then come back and sign in."
+  },
+  "requireAuth": {
+    "redirecting": "Redirecting…"
+  },
+  "chooseRole": {
+    "chip": "Quick setup — Premium Garage experience",
+    "title": "Choose your role and start a <1>Premium</1> experience",
+    "subtitle": "Customer or mechanic — same interface, but different tools designed to get you results fast and confidently.",
+    "customerTitle": "Customer",
+    "mechanicTitle": "Mechanic",
+    "selected": "Selected",
+    "customerDesc": "Find a nearby mechanic, track progress, and make decisions clearly from the first moment.",
+    "mechanicDesc": "Receive new requests, prioritize them, and manage your time with a smart dashboard.",
+    "customerFeatures": "Nearby mechanic • Service request • Tracking",
+    "mechanicFeatures": "Requests • Earnings • Management",
+    "continueLogin": "Continue to sign in",
+    "createNew": "Create a new account",
+    "mvpNote": "MVP experience — later we’ll add maps, live tracking, and payments."
+  },
+  "landing": {
+    "chip": "Marketplace + Garage OS — 2026 Interface",
+    "headlineA": "Your Car.",
+    "headlineB": "Smarter.",
+    "headlineC": "",
+    "heroP": "Sayarati — Garage OS is a smart digital system for maintenance tracking, repair history, and trusted garage services — designed like a premium automotive dashboard.",
+    "fiatModels": [
+      "Fiat Doblò",
+      "Fiat 500",
+      "Fiat Panda"
+    ],
+    "ctaStart": "Get started",
+    "ctaBrowse": "Browse services",
+    "stats": {
+      "t1": "24/7",
+      "d1": "Road assistance",
+      "t2": "+30",
+      "d2": "Car services",
+      "t3": "Instant",
+      "d3": "MVP experience"
+    },
+    "trustedBy": "Trusted by maintenance experts",
+    "carAlt": "A futuristic car inside a premium garage",
+    "fiatAlt": "Fiat in Algeria",
+    "carStats": {
+      "rating": "Rating",
+      "nearby": "Nearby",
+      "availability": "Availability",
+      "available": "Available"
+    },
+    "services": {
+      "eyebrow": "Smart Features",
+      "title": "A modern Garage OS for your car",
+      "description": "AI diagnostics, maintenance tracking, alerts, and service history — packaged as a premium control panel.",
+      "book": "Explore",
+      "cards": [
+        {
+          "title": "Engine oil & filter",
+          "desc": "Oil picks and change intervals for any car, based on mileage and driving conditions.",
+          "kind": "oil",
+          "featured": true
+        },
+        {
+          "title": "Maintenance booking",
+          "desc": "Schedule routine maintenance or repairs with appointment reminders."
+        },
+        {
+          "title": "Road assistance",
+          "desc": "Towing, battery boost, tire change… fast help when you need it."
+        },
+        {
+          "title": "Pre-purchase inspection",
+          "desc": "Full vehicle inspection and a clear report to make a better decision."
+        },
+        {
+          "title": "Wash & detailing",
+          "desc": "Interior/exterior care services with flexible options."
+        },
+        {
+          "title": "Insurance & renewal",
+          "desc": "Renewal reminders and help with the process."
+        },
+        {
+          "title": "Parts & accessories",
+          "desc": "Curated parts orders with delivery based on availability."
+        }
+      ]
+    },
+    "cars": {
+      "eyebrow": "Supported cars",
+      "title": "Built for real-world models",
+      "description": "Start with Fiat — expand to everything.",
+      "cta": "View details",
+      "items": [
+        {
+          "name": "Fiat Doblò",
+          "desc": "Practical, hardworking, and maintenance-heavy — perfect for Garage OS tracking.",
+          "image": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ultra%20realistic%20cinematic%20photo%20of%20a%20Fiat%20Dobl%C3%B2%20white%20van%20parked%20in%20Algiers%2C%20Algeria%2C%20premium%20garage%20background%2C%20golden%20hour%2C%20shallow%20depth%20of%20field%2C%20high%20detail%2C%2035mm%2C%20clean%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_4_3"
+        },
+        {
+          "name": "Fiat 500",
+          "desc": "Compact city driving with smart alerts, oil intervals, and service history at a glance.",
+          "image": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ultra%20realistic%20cinematic%20photo%20of%20a%20red%20Fiat%20500%20parked%20in%20Algiers%2C%20Algeria%2C%20modern%20street%2C%20premium%20look%2C%20golden%20hour%2C%20shallow%20depth%20of%20field%2C%20high%20detail%2C%2035mm%2C%20clean%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_4_3"
+        },
+        {
+          "name": "Fiat Panda",
+          "desc": "Simple, reliable, and ideal for preventative maintenance tracking with clear reminders.",
+          "image": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ultra%20realistic%20cinematic%20photo%20of%20a%20Fiat%20Panda%20grey%20compact%20car%20parked%20in%20Algiers%2C%20Algeria%2C%20premium%20garage%20aesthetic%2C%20golden%20hour%2C%20shallow%20depth%20of%20field%2C%20high%20detail%2C%2035mm%2C%20clean%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_4_3"
+        }
+      ]
+    },
+    "how": {
+      "eyebrow": "How it works",
+      "title": "3 simple steps",
+      "description": "Choose a service, enter your details, and receive confirmation.",
+      "steps": [
+        {
+          "n": "01",
+          "title": "Choose a service",
+          "desc": "Select the right service for your car."
+        },
+        {
+          "n": "02",
+          "title": "Enter details",
+          "desc": "Name, phone number, and a suitable time."
+        },
+        {
+          "n": "03",
+          "title": "Confirm & deliver",
+          "desc": "Get a quick confirmation, then we execute the request."
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently asked questions",
+      "description": "Quick answers to common questions.",
+      "items": [
+        {
+          "q": "Can I book from my phone?",
+          "a": "Yes. The design is fully responsive and works on all screens."
+        },
+        {
+          "q": "How can I reach you quickly?",
+          "a": "Email us at {{email}} or use the contact section below."
+        },
+        {
+          "q": "Are prices fixed?",
+          "a": "Prices vary by service and location. We’ll confirm details before execution."
+        }
+      ]
+    },
+    "finalCta": {
+      "badge": "Ready to start?",
+      "title": "Start now and make car maintenance easier",
+      "desc": "A clear interface, fewer steps, and a premium experience that builds trust instantly.",
+      "start": "Get started",
+      "contact": "Contact us"
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Let us help you",
+      "description": "Send your request and we’ll get back to you as soon as possible.",
+      "infoTitle": "Contact information",
+      "emailLabel": "Email:",
+      "phoneLabel": "Phone:",
+      "locationLabel": "Location:",
+      "note": "Note: this is a UI-only form. If you want, I can add a real form that sends to your email or an admin dashboard.",
+      "formTitle": "Quick request form",
+      "formName": "Name",
+      "formPhone": "Phone number",
+      "serviceLabel": "Requested service",
+      "serviceDefault": "Maintenance booking",
+      "services": [
+        "Maintenance booking",
+        "Road assistance",
+        "Pre-purchase inspection",
+        "Wash & detailing",
+        "Insurance & renewal",
+        "Parts & accessories"
+      ],
+      "notesLabel": "Notes",
+      "notesPlaceholder": "Write the details…",
+      "submitUi": "Send (UI)",
+      "consent": "By clicking Send, you agree that we may contact you regarding this request."
+    }
+  },
+  "customer": {
+    "dashboard": {
+      "chip": "Customer dashboard",
+      "title": "Welcome to Garage OS",
+      "subtitle": "A fast control panel: search, request, and track.",
+      "browse": "Browse services",
+      "cardFindTitle": "Nearby mechanic",
+      "cardFindDesc": "Discover the closest by location and rating, then request with one click.",
+      "cardFindAction": "Start search →",
+      "cardRequestTitle": "Instant service request",
+      "cardRequestDesc": "Describe the issue, pick a service, and the system sends it with clear priority.",
+      "cardRequestAction": "Send request →",
+      "stats": {
+        "statusK": "Status",
+        "statusV": "Ready",
+        "etaK": "Estimated time",
+        "etaV": "8–12 min",
+        "trustK": "Trust",
+        "trustV": "Premium"
+      },
+      "yourCar": "Your car",
+      "edit": "Edit",
+      "recommendations": "Recommendations",
+      "car": {
+        "type": "Type",
+        "make": "Make",
+        "model": "Model",
+        "year": "Year",
+        "km": "Mileage",
+        "empty": "Car details haven’t been added yet.",
+        "add": "Add car details →"
+      },
+      "soon": "Coming soon: live request tracking + maintenance history + photo uploads."
+    },
+    "find": {
+      "chip": "Discover nearby mechanics",
+      "title": "Nearby mechanics",
+      "subtitle": "MVP UI — coming soon: map, filters, and detailed ratings.",
+      "back": "Back",
+      "direct": "Direct request",
+      "filters": [
+        "Available now",
+        "Top rated",
+        "Fast arrival",
+        "Premium"
+      ],
+      "available": "Available",
+      "busy": "Busy",
+      "eta": "Arrival time",
+      "price": "Estimated price",
+      "from": "Starting from",
+      "send": "Send request",
+      "view": "View",
+      "garages": [
+        {
+          "name": "Gulf Garage"
+        },
+        {
+          "name": "Quick Mechanic"
+        },
+        {
+          "name": "Sayarati Center"
+        }
+      ]
+    },
+    "request": {
+      "chip": "Service request",
+      "title": "Send a request — with a Premium feel",
+      "subtitle": "Fill in the details and press Send (MVP UI).",
+      "back": "Back",
+      "serviceType": "Service type",
+      "problem": "Issue description",
+      "problemPlaceholder": "Write the details…",
+      "submitUi": "Send request (UI)",
+      "note": "Later, the request will be sent to the nearest mechanic with instant notifications.",
+      "stepsTitle": "Steps",
+      "steps": [
+        "Choose a service type.",
+        "Write a short description of the issue.",
+        "Send → receive confirmation."
+      ],
+      "noteTitle": "Note:",
+      "noteBox": "We’ll add GPS location + photos + estimated pricing in the next phase."
+    },
+    "onboarding": {
+      "title": "Choose your car type and model",
+      "subtitle": "This step helps us prepare your service request faster and more accurately.",
+      "carType": "Car type",
+      "km": "Mileage (km)",
+      "kmPlaceholder": "e.g. 185000",
+      "year": "Year",
+      "make": "Make",
+      "model": "Model",
+      "searchMake": "Search make",
+      "searchModel": "Search model",
+      "catalogCount": "{{count}} of {{total}} makes",
+      "modelCount": "{{count}} of {{total}} models",
+      "oilPreviewTitle": "Recommendations for your car",
+      "oilPreviewDescription": "Suggestions update live based on make, model, year, and mileage.",
+      "oilPreviewLoading": "Loading recommendations...",
+      "oilPreviewEmpty": "Enter the mileage to show the recommendations that fit this model.",
+      "saveContinue": "Save & continue",
+      "back": "Back",
+      "choice": "Your choice:",
+      "types": {
+        "sedan": "Sedan",
+        "suv": "SUV",
+        "crossover": "Crossover",
+        "hatchback": "Hatchback",
+        "pickup": "Pickup",
+        "van": "Van",
+        "coupe": "Coupe",
+        "wagon": "Wagon",
+        "convertible": "Convertible",
+        "minivan": "Minivan",
+        "mpv": "MPV",
+        "truck": "Truck"
+      },
+      "noRecommendedOil": "No recommended oil available"
+    },
+    "recommendations": {
+      "chip": "Recommendations",
+      "title": "Recommended oil + maintenance parts",
+      "subtitle": "Based on your car details, model, and mileage.",
+      "afterOnboarding": {
+        "badge": "Car saved",
+        "title": "Your car is ready, and this is the next flow",
+        "description": "Start with the recommendations shown here, then open the store to review available oils, and after that you can request a service or look for a nearby mechanic.",
+        "openStore": "Go to store",
+        "requestService": "Request service now",
+        "steps": {
+          "recommendations": "1. Review the recommended oil and maintenance parts",
+          "store": "2. Open the store and check the matching products",
+          "mechanic": "3. Request a service or find a nearby mechanic"
+        }
+      },
+      "editCar": "Edit car",
+      "findWorkshop": "Find a workshop",
+      "missingCar": "Car details haven’t been added yet.",
+      "addCar": "Add car details →",
+      "yourCar": "Your car:",
+      "oilsTitle": "Recommended oil",
+      "partsTitle": "Suggested parts",
+      "loading": "Loading…",
+      "empty": "No recommendation matches this car and mileage yet.",
+      "openLink": "Open link →",
+      "requestService": "Request a service",
+      "back": "Back",
+      "openStore": "Open store",
+      "storeTitle": "Available oils to buy",
+      "storeDescription": "See the oil type, mileage range, price in DA, seller, and delivery details.",
+      "buyNow": "Buy from store",
+      "fallback": {
+        "range": {
+          "between": "{{from}} - {{to}} {{unit}}",
+          "from": "{{from}}+ {{unit}}"
+        },
+        "items": {
+          "firstOilService": {
+            "title": "First oil service for {{make}} {{model}}",
+            "details": "For {{make}} {{model}} {{year}}, start with engine oil and oil filter service. Best fit for cars in the {{range}} range."
+          },
+          "initialInspection": {
+            "title": "Initial inspection and fluid check",
+            "details": "At {{mileage}} {{unit}}, inspect tire pressure, brake pads, and key fluids for {{make}} {{model}}."
+          },
+          "regularOilService": {
+            "title": "Regular oil service for {{make}} {{model}}",
+            "details": "This mileage range usually needs fresh oil and a new oil filter. Current service window: {{range}}."
+          },
+          "airAndCabinFilter": {
+            "title": "Air and cabin filter replacement",
+            "details": "For {{make}} {{model}}, check or replace the engine air filter and cabin filter in the {{range}} mileage band."
+          },
+          "brakeCheck": {
+            "title": "Brake inspection",
+            "details": "Inspect brake pads, discs, and alignment now so {{make}} {{model}} stays safe in daily driving."
+          },
+          "syntheticOilRefresh": {
+            "title": "Synthetic oil refresh",
+            "details": "At {{mileage}} {{unit}}, use a full oil service and confirm the right viscosity from the car manual for {{make}} {{model}}."
+          },
+          "ignitionAndFilters": {
+            "title": "Ignition and filter service",
+            "details": "This stage is a good time to inspect spark plugs and renew key filters for {{make}} {{model}}."
+          },
+          "brakeFluidCheck": {
+            "title": "Brake fluid and hose check",
+            "details": "Flush or inspect brake fluid and hoses during the {{range}} interval for more stable braking."
+          },
+          "highMileageOilService": {
+            "title": "High-mileage oil service",
+            "details": "For {{make}} {{model}}, use a careful oil service and check for leaks or consumption signs at {{mileage}} {{unit}}."
+          },
+          "coolingAndTransmission": {
+            "title": "Cooling and transmission service",
+            "details": "Inspect coolant and transmission fluid in the {{range}} mileage range to protect long-term reliability."
+          },
+          "suspensionCheck": {
+            "title": "Suspension and steering check",
+            "details": "Check shocks, bushings, steering, and wheel balance for {{make}} {{model}} at this mileage."
+          },
+          "timingAndBelts": {
+            "title": "Belts and major service inspection",
+            "details": "Above {{range}}, inspect belts, timing-related components, and major service items for {{make}} {{model}}."
+          },
+          "batteryAndSuspension": {
+            "title": "Battery and suspension follow-up",
+            "details": "At higher mileage, test the battery and review suspension wear points before they affect comfort or starting."
+          }
+        }
+      },
+      "noRecommendedOil": "No recommended oil available"
+    },
+    "store": {
+      "chip": "Oil store",
+      "title": "Oil and maintenance store",
+      "subtitle": "Choose the right oil for your car based on model and mileage, then review price, seller, and delivery inside Algeria.",
+      "backRecommendations": "Back to recommendations",
+      "editCar": "Edit car",
+      "loading": "Loading store...",
+      "missingCar": "Add your car details first so we can recommend the right oils.",
+      "addCar": "Add car details →",
+      "yourCar": "Your car:",
+      "recommendedTitle": "Recommended oils for your car",
+      "recommendedDescription": "Products are ranked here using your make, model, and current mileage.",
+      "productsFound": "matching products",
+      "seller": "Seller",
+      "delivery": "Delivery",
+      "price": "Price",
+      "addToCart": "Add to cart",
+      "catalogTitle": "All available oils",
+      "viewCard": "View card",
+      "cartTitle": "Shopping cart",
+      "remove": "Remove",
+      "qty": "Quantity",
+      "subtotal": "Subtotal",
+      "deliveryFee": "Delivery fee",
+      "total": "Total",
+      "cartEmpty": "Your cart is empty right now.",
+      "checkoutTitle": "Checkout",
+      "fullName": "Full name",
+      "phone": "Phone number",
+      "wilaya": "Wilaya",
+      "address": "Full address",
+      "notes": "Extra notes",
+      "placeOrder": "Place order",
+      "completeOrder": "Complete the customer and address details before confirming the order.",
+      "orderSuccess": "Your order has been saved. Products: {{count}} - total amount: {{total}}."
+    }
+  },
+  "mechanic": {
+    "dashboard": {
+      "chip": "Mechanic dashboard",
+      "title": "Full control… with a 2026 dashboard vibe",
+      "subtitle": "Monitor requests, prioritize quickly, and keep the experience fast and professional.",
+      "openRequests": "Open requests",
+      "newRequestsTitle": "New requests",
+      "newRequestsDesc": "Accept/decline quickly with clear distance and priority indicators.",
+      "newRequestsAction": "Open requests →",
+      "earningsTitle": "Earnings",
+      "earningsDesc": "Daily/weekly summary with growth badge and performance signals.",
+      "earningsAction": "View earnings →",
+      "stats": {
+        "respK": "Response time",
+        "respV": "≤ 3 min",
+        "trustK": "Trust",
+        "trustV": "4.9/5",
+        "todayK": "Today",
+        "todayV": "Ready"
+      },
+      "quickSummary": "Quick summary",
+      "summary": {
+        "newRequests": "New requests",
+        "messages": "Messages",
+        "todayEarnings": "Today’s earnings"
+      },
+      "soon": "Coming soon: enable/disable requests + set work radius + automatic scheduling."
+    },
+    "requests": {
+      "chip": "Requests",
+      "title": "New requests",
+      "subtitle": "MVP UI — later: distance filters + status + ETA.",
+      "back": "Back",
+      "accept": "Accept",
+      "reject": "Decline",
+      "sampleNotes": {
+        "tire": "Rear-left tire…",
+        "battery": "The car won’t start",
+        "towing": "Unexpected breakdown on the road"
+      }
+    },
+    "earnings": {
+      "chip": "Analytics",
+      "title": "Earnings",
+      "subtitle": "MVP UI — later: date filters + withdrawals + platform fees.",
+      "back": "Back",
+      "cards": {
+        "today": "Today",
+        "week": "This week",
+        "month": "This month",
+        "requests": "{{count}} requests"
+      },
+      "latest": "Latest transactions",
+      "when": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "twoDays": "Two days ago"
+      }
+    }
+  },
+  "whatsapp": {
+    "aria": "Contact via WhatsApp",
+    "title": "WhatsApp"
+  },
+  "footer": {
+    "about": "Sayarati helps you track your car and book services quickly and clearly.",
+    "linksTitle": "Links",
+    "services": "Services",
+    "faq": "FAQ",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contactTitle": "Contact",
+    "email": "Email:",
+    "phone": "Phone:",
+    "rights": "© {{year}} Sayarati. All rights reserved.",
+    "responsive": "Designed to work on mobile, tablet, and desktop."
+  }
+}

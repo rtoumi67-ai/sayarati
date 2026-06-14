@@ -1,0 +1,597 @@
+{
+  "meta": {
+    "title": "Sayarati | Services auto premium",
+    "description": "Sayarati est une plateforme premium de services automobiles : réservation, entretien et tout ce dont votre voiture a besoin — avec une expérience Garage OS futuriste.",
+    "landingTitle": "Accueil | Sayarati",
+    "pages": {
+      "landing": "Accueil | Sayarati",
+      "chooseRole": "Choisir un rôle | Sayarati",
+      "login": "Connexion | Sayarati",
+      "register": "Créer un compte | Sayarati",
+      "customer": "Tableau client | Sayarati",
+      "customerFind": "Mécaniciens proches | Sayarati",
+      "customerRequest": "Demander un service | Sayarati",
+      "carInfo": "Infos voiture | Sayarati",
+      "mechanic": "Tableau mécanicien | Sayarati",
+      "mechanicRequests": "Demandes | Sayarati",
+      "mechanicEarnings": "Revenus | Sayarati"
+    }
+  },
+  "language": {
+    "ar": "العربية",
+    "en": "English",
+    "fr": "Français"
+  },
+  "site": {
+    "city": "El Taref"
+  },
+  "units": {
+    "km": "km",
+    "sar": "SAR",
+    "min": "min"
+  },
+  "roles": {
+    "customer": "Client",
+    "mechanic": "Mécanicien"
+  },
+  "serviceKinds": {
+    "battery": "Batterie",
+    "tire": "Changement de pneu",
+    "towing": "Remorquage",
+    "maintenance": "Entretien",
+    "inspection": "Inspection",
+    "other": "Autre"
+  },
+  "nav": {
+    "chooseRole": "Choisir un rôle",
+    "login": "Connexion",
+    "register": "Créer un compte",
+    "dashboard": "Tableau de bord",
+    "requests": "Demandes",
+    "earnings": "Revenus",
+    "nearbyMechanic": "Mécaniciens proches",
+    "requestService": "Demander un service",
+    "startNow": "Commencer",
+    "logout": "Déconnexion",
+    "openMenu": "Ouvrir le menu",
+    "navigation": "Navigation",
+    "menu": "Menu"
+  },
+  "auth": {
+    "currentRole": "Rôle actuel : {{role}}",
+    "chooseRoleFirst": "Choisissez d’abord votre rôle",
+    "goChooseRole": "Aller au choix du rôle",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "••••••••",
+    "phone": "Numéro de téléphone",
+    "phonePlaceholder": "05xxxxxxxx",
+    "name": "Nom",
+    "namePlaceholder": "Ex. : Ahmed",
+    "signIn": "Connexion",
+    "signingIn": "Connexion…",
+    "creatingAccount": "Création du compte…",
+    "createAccount": "Créer un nouveau compte",
+    "createAccountShort": "Créer un compte",
+    "continueWithGoogle": "Continuer avec Google",
+    "haveAccount": "J’ai déjà un compte (Connexion)",
+    "skipMvp": "Passer (MVP)",
+    "loginFlowNote": "Il s’agit d’un flux UI initial. Plus tard, nous pourrons ajouter OTP / mot de passe / authentification réelle.",
+    "registerFlowNote": "L’inscription sera ensuite connectée à une base de données avec vérification du téléphone (OTP).",
+    "checkEmailNotice": "Votre compte a ete cree. Verifiez votre email pour le confirmer, puis revenez vous connecter."
+  },
+  "requireAuth": {
+    "redirecting": "Redirection…"
+  },
+  "chooseRole": {
+    "chip": "Configuration rapide — Expérience Garage premium",
+    "title": "Choisissez votre rôle et démarrez une expérience <1>Premium</1>",
+    "subtitle": "Client ou mécanicien — même interface, mais des outils différents conçus pour aller vite et en confiance.",
+    "customerTitle": "Client",
+    "mechanicTitle": "Mécanicien",
+    "selected": "Sélectionné",
+    "customerDesc": "Trouvez un mécanicien proche, suivez l’état et prenez une décision clairement dès le départ.",
+    "mechanicDesc": "Recevez les nouvelles demandes, priorisez-les et gérez votre temps via un tableau de bord intelligent.",
+    "customerFeatures": "Mécanicien proche • Demande • Suivi",
+    "mechanicFeatures": "Demandes • Revenus • Gestion",
+    "continueLogin": "Continuer vers la connexion",
+    "createNew": "Créer un nouveau compte",
+    "mvpNote": "Expérience MVP — nous ajouterons ensuite carte, suivi en direct et paiement."
+  },
+  "landing": {
+    "chip": "Marketplace + Garage OS — Interface 2026",
+    "headlineA": "Sayarati —",
+    "headlineB": "Garage OS",
+    "headlineC": "pour l’entretien premium",
+    "heroP": "Une expérience premium inspirée de Tesla + Porsche : design Garage sombre, cartes flottantes, et une sensation Smart Tech qui inspire confiance dès le premier regard.",
+    "fiatModels": [
+      "Fiat Doblò",
+      "Fiat 500",
+      "Fiat Panda"
+    ],
+    "ctaStart": "Commencer",
+    "ctaBrowse": "Découvrir les services",
+    "stats": {
+      "t1": "24/7",
+      "d1": "Assistance routière",
+      "t2": "+30",
+      "d2": "Services auto",
+      "t3": "Instant",
+      "d3": "Expérience MVP"
+    },
+    "trustedBy": "Approuvé par des experts en maintenance",
+    "carAlt": "Voiture futuriste dans un garage premium",
+    "fiatAlt": "Fiat en Algérie",
+    "carStats": {
+      "rating": "Note",
+      "nearby": "Proche",
+      "availability": "Disponibilité",
+      "available": "Disponible"
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "Choisissez le bon service en quelques secondes",
+      "description": "Des catégories claires — entièrement responsive sur tous les appareils.",
+      "book": "Réserver",
+      "cards": [
+        {
+          "title": "Huile moteur + filtre",
+          "desc": "Recommandations d’huile pour toutes les voitures selon le kilométrage et l’usage.",
+          "kind": "oil",
+          "featured": true
+        },
+        {
+          "title": "Réservation d’entretien",
+          "desc": "Planifiez l’entretien ou les réparations avec des rappels."
+        },
+        {
+          "title": "Assistance routière",
+          "desc": "Remorquage, batterie, pneu… aide rapide quand il le faut."
+        },
+        {
+          "title": "Contrôle avant achat",
+          "desc": "Inspection complète et rapport clair pour mieux décider."
+        },
+        {
+          "title": "Lavage & detailing",
+          "desc": "Soins intérieur/extérieur avec options flexibles."
+        },
+        {
+          "title": "Assurance & renouvellement",
+          "desc": "Rappels et aide pour les démarches."
+        },
+        {
+          "title": "Pièces & accessoires",
+          "desc": "Commandes sélectionnées avec livraison selon disponibilité."
+        }
+      ]
+    },
+    "cars": {
+      "eyebrow": "Voitures prises en charge",
+      "title": "Pensé pour des modèles réels",
+      "description": "On commence avec Fiat, puis on élargit.",
+      "cta": "Voir les détails",
+      "items": [
+        {
+          "name": "Fiat Doblò",
+          "desc": "Pratique et robuste, idéale pour suivre l’entretien dans Garage OS.",
+          "image": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ultra%20realistic%20cinematic%20photo%20of%20a%20Fiat%20Dobl%C3%B2%20white%20van%20parked%20in%20Algiers%2C%20Algeria%2C%20premium%20garage%20background%2C%20golden%20hour%2C%20shallow%20depth%20of%20field%2C%20high%20detail%2C%2035mm%2C%20clean%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_4_3"
+        },
+        {
+          "name": "Fiat 500",
+          "desc": "Compacte pour la ville avec alertes intelligentes, suivi de l’huile et historique clair.",
+          "image": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ultra%20realistic%20cinematic%20photo%20of%20a%20red%20Fiat%20500%20parked%20in%20Algiers%2C%20Algeria%2C%20modern%20street%2C%20premium%20look%2C%20golden%20hour%2C%20shallow%20depth%20of%20field%2C%20high%20detail%2C%2035mm%2C%20clean%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_4_3"
+        },
+        {
+          "name": "Fiat Panda",
+          "desc": "Simple, fiable et parfaite pour l’entretien préventif avec rappels clairs.",
+          "image": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Ultra%20realistic%20cinematic%20photo%20of%20a%20Fiat%20Panda%20grey%20compact%20car%20parked%20in%20Algiers%2C%20Algeria%2C%20premium%20garage%20aesthetic%2C%20golden%20hour%2C%20shallow%20depth%20of%20field%2C%20high%20detail%2C%2035mm%2C%20clean%20composition%2C%20no%20text%2C%20no%20watermark&image_size=landscape_4_3"
+        }
+      ]
+    },
+    "how": {
+      "eyebrow": "Fonctionnement",
+      "title": "3 étapes simples",
+      "description": "Choisissez un service, saisissez vos infos, puis recevez la confirmation.",
+      "steps": [
+        {
+          "n": "01",
+          "title": "Choisir un service",
+          "desc": "Sélectionnez le service adapté à votre voiture."
+        },
+        {
+          "n": "02",
+          "title": "Saisir les détails",
+          "desc": "Nom, téléphone, et horaire souhaité."
+        },
+        {
+          "n": "03",
+          "title": "Confirmer & exécuter",
+          "desc": "Confirmation rapide, puis exécution de la demande."
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Questions fréquentes",
+      "description": "Réponses rapides aux questions les plus courantes.",
+      "items": [
+        {
+          "q": "Puis-je réserver depuis mon téléphone ?",
+          "a": "Oui. Le design est totalement responsive."
+        },
+        {
+          "q": "Comment vous contacter rapidement ?",
+          "a": "Contactez-nous par email : {{email}} ou via la section Contact ci-dessous."
+        },
+        {
+          "q": "Les prix sont-ils fixes ?",
+          "a": "Ils varient selon le service et la zone. Nous confirmons avant exécution."
+        }
+      ]
+    },
+    "finalCta": {
+      "badge": "Prêt à démarrer ?",
+      "title": "Commencez maintenant et simplifiez l’entretien",
+      "desc": "Interface claire, moins d’étapes, et une expérience premium qui inspire confiance.",
+      "start": "Commencer",
+      "contact": "Nous contacter"
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "On s’occupe de vous",
+      "description": "Envoyez votre demande et nous vous répondrons au plus vite.",
+      "infoTitle": "Informations de contact",
+      "emailLabel": "Email :",
+      "phoneLabel": "Téléphone :",
+      "locationLabel": "Localisation :",
+      "note": "Note : ce formulaire est uniquement UI. Si vous le souhaitez, je peux ajouter un vrai formulaire vers votre email ou un tableau d’administration.",
+      "formTitle": "Formulaire rapide",
+      "formName": "Nom",
+      "formPhone": "Téléphone",
+      "serviceLabel": "Service demandé",
+      "serviceDefault": "Réservation d’entretien",
+      "services": [
+        "Réservation d’entretien",
+        "Assistance routière",
+        "Contrôle avant achat",
+        "Lavage & detailing",
+        "Assurance & renouvellement",
+        "Pièces & accessoires"
+      ],
+      "notesLabel": "Notes",
+      "notesPlaceholder": "Écrivez les détails…",
+      "submitUi": "Envoyer (UI)",
+      "consent": "En cliquant sur Envoyer, vous acceptez que nous vous contactions au sujet de cette demande."
+    }
+  },
+  "customer": {
+    "dashboard": {
+      "chip": "Tableau client",
+      "title": "Bienvenue dans Garage OS",
+      "subtitle": "Un centre de contrôle rapide : recherche, demande, suivi.",
+      "browse": "Découvrir les services",
+      "cardFindTitle": "Mécanicien proche",
+      "cardFindDesc": "Trouvez le plus proche selon la position et la note, puis envoyez une demande en un clic.",
+      "cardFindAction": "Démarrer la recherche →",
+      "cardRequestTitle": "Demande immédiate",
+      "cardRequestDesc": "Décrivez le problème, choisissez un service, et le système l’envoie avec une priorité claire.",
+      "cardRequestAction": "Envoyer une demande →",
+      "stats": {
+        "statusK": "Statut",
+        "statusV": "Prêt",
+        "etaK": "Temps estimé",
+        "etaV": "8–12 min",
+        "trustK": "Confiance",
+        "trustV": "Premium"
+      },
+      "yourCar": "Votre voiture",
+      "edit": "Modifier",
+      "recommendations": "Recommandations",
+      "car": {
+        "type": "Type",
+        "make": "Marque",
+        "model": "Modèle",
+        "year": "Année",
+        "km": "Kilométrage",
+        "empty": "Les informations de la voiture n’ont pas encore été ajoutées.",
+        "add": "Ajouter les infos →"
+      },
+      "soon": "Bientôt : suivi en direct + historique d’entretien + envoi de photos."
+    },
+    "find": {
+      "chip": "Découvrir des mécaniciens proches",
+      "title": "Mécaniciens proches",
+      "subtitle": "UI MVP — bientôt : carte, filtres, et évaluations détaillées.",
+      "back": "Retour",
+      "direct": "Demande directe",
+      "filters": [
+        "Disponible",
+        "Très bien noté",
+        "Arrivée rapide",
+        "Premium"
+      ],
+      "available": "Disponible",
+      "busy": "Occupé",
+      "eta": "Temps d’arrivée",
+      "price": "Prix estimé",
+      "from": "À partir de",
+      "send": "Envoyer",
+      "view": "Voir",
+      "garages": [
+        {
+          "name": "Garage du Golfe"
+        },
+        {
+          "name": "Mécanicien Express"
+        },
+        {
+          "name": "Centre Sayarati"
+        }
+      ]
+    },
+    "request": {
+      "chip": "Demande de service",
+      "title": "Envoyer une demande — style Premium",
+      "subtitle": "Remplissez les détails et cliquez Envoyer (UI MVP).",
+      "back": "Retour",
+      "serviceType": "Type de service",
+      "problem": "Description du problème",
+      "problemPlaceholder": "Écrivez les détails…",
+      "submitUi": "Envoyer (UI)",
+      "note": "Plus tard, la demande sera envoyée au mécanicien le plus proche avec notifications instantanées.",
+      "stepsTitle": "Étapes",
+      "steps": [
+        "Choisissez le type de service.",
+        "Décrivez brièvement le problème.",
+        "Envoyer → recevoir la confirmation."
+      ],
+      "noteTitle": "Note :",
+      "noteBox": "Nous ajouterons la localisation GPS + photos + estimation du prix à la prochaine étape."
+    },
+    "onboarding": {
+      "title": "Choisissez le type et le modèle de votre voiture",
+      "subtitle": "Cette étape nous aide à préparer votre demande plus vite et plus précisément.",
+      "carType": "Type de voiture",
+      "km": "Kilométrage (km)",
+      "kmPlaceholder": "ex: 185000",
+      "year": "Année",
+      "make": "Marque",
+      "model": "Modèle",
+      "searchMake": "Rechercher une marque",
+      "searchModel": "Rechercher un modèle",
+      "catalogCount": "{{count}} sur {{total}} marques",
+      "modelCount": "{{count}} sur {{total}} modèles",
+      "oilPreviewTitle": "Recommandations pour votre voiture",
+      "oilPreviewDescription": "Les suggestions se mettent à jour selon la marque, le modèle, l'année et le kilométrage.",
+      "oilPreviewLoading": "Chargement des recommandations...",
+      "oilPreviewEmpty": "Entrez le kilométrage pour afficher les recommandations adaptées à ce modèle.",
+      "saveContinue": "Enregistrer & continuer",
+      "back": "Retour",
+      "choice": "Votre choix :",
+      "types": {
+        "sedan": "Berline",
+        "suv": "SUV",
+        "crossover": "Crossover",
+        "hatchback": "Compacte",
+        "pickup": "Pick-up",
+        "van": "Van",
+        "coupe": "Coupé",
+        "wagon": "Break",
+        "convertible": "Cabriolet",
+        "minivan": "Minivan",
+        "mpv": "Monospace",
+        "truck": "Camion"
+      },
+      "noRecommendedOil": "Aucune huile recommandee disponible"
+    },
+    "recommendations": {
+      "chip": "Recommandations",
+      "title": "Huile + pièces d'entretien recommandées",
+      "subtitle": "Selon votre voiture, le modèle et le kilométrage.",
+      "afterOnboarding": {
+        "badge": "Voiture enregistrée",
+        "title": "Votre voiture est prête, voici la suite du parcours",
+        "description": "Commencez par les recommandations affichées ici, puis ouvrez le store pour voir les huiles disponibles, et ensuite vous pouvez demander un service ou chercher un mécanicien proche.",
+        "openStore": "Aller au store",
+        "requestService": "Demander un service",
+        "steps": {
+          "recommendations": "1. Consultez l'huile et les pièces recommandées",
+          "store": "2. Ouvrez le store et vérifiez les produits adaptés",
+          "mechanic": "3. Demandez un service ou trouvez un mécanicien proche"
+        }
+      },
+      "editCar": "Modifier la voiture",
+      "findWorkshop": "Trouver un atelier",
+      "missingCar": "Les informations de la voiture n’ont pas encore été ajoutées.",
+      "addCar": "Ajouter les infos →",
+      "yourCar": "Votre voiture :",
+      "oilsTitle": "Huile recommandée",
+      "partsTitle": "Pièces suggérées",
+      "loading": "Chargement…",
+      "empty": "Aucune recommandation ne correspond encore à cette voiture et à ce kilométrage.",
+      "openLink": "Ouvrir le lien →",
+      "requestService": "Demander un service",
+      "back": "Retour",
+      "openStore": "Ouvrir le store",
+      "storeTitle": "Huiles disponibles à l'achat",
+      "storeDescription": "Retrouvez le type d'huile, la plage kilométrique, le prix en DA, le vendeur et la livraison.",
+      "buyNow": "Acheter depuis le store",
+      "fallback": {
+        "range": {
+          "between": "{{from}} - {{to}} {{unit}}",
+          "from": "{{from}}+ {{unit}}"
+        },
+        "items": {
+          "firstOilService": {
+            "title": "Première vidange pour {{make}} {{model}}",
+            "details": "Pour {{make}} {{model}} {{year}}, commencez par une vidange moteur avec filtre à huile. Recommandé pour la plage {{range}}."
+          },
+          "initialInspection": {
+            "title": "Contrôle initial et vérification des fluides",
+            "details": "À {{mileage}} {{unit}}, contrôlez la pression des pneus, les plaquettes de frein et les fluides principaux de {{make}} {{model}}."
+          },
+          "regularOilService": {
+            "title": "Vidange régulière pour {{make}} {{model}}",
+            "details": "Dans cette plage, une huile neuve avec filtre à huile est généralement recommandée. Fenêtre actuelle : {{range}}."
+          },
+          "airAndCabinFilter": {
+            "title": "Remplacement filtre à air et habitacle",
+            "details": "Pour {{make}} {{model}}, vérifiez ou remplacez le filtre à air moteur et le filtre habitacle dans la plage {{range}}."
+          },
+          "brakeCheck": {
+            "title": "Contrôle du freinage",
+            "details": "Vérifiez plaquettes, disques et parallélisme maintenant pour garder {{make}} {{model}} sûre au quotidien."
+          },
+          "syntheticOilRefresh": {
+            "title": "Entretien huile synthétique",
+            "details": "À {{mileage}} {{unit}}, faites une vidange complète et confirmez la bonne viscosité dans le manuel de {{make}} {{model}}."
+          },
+          "ignitionAndFilters": {
+            "title": "Allumage et filtres",
+            "details": "Cette étape est idéale pour contrôler les bougies et renouveler les filtres principaux de {{make}} {{model}}."
+          },
+          "brakeFluidCheck": {
+            "title": "Liquide de frein et durites",
+            "details": "Contrôlez ou remplacez le liquide de frein et inspectez les durites pendant l'intervalle {{range}}."
+          },
+          "highMileageOilService": {
+            "title": "Vidange spécial fort kilométrage",
+            "details": "Pour {{make}} {{model}}, faites un entretien huile soigné et vérifiez d'éventuelles fuites ou consommation à {{mileage}} {{unit}}."
+          },
+          "coolingAndTransmission": {
+            "title": "Refroidissement et transmission",
+            "details": "Contrôlez le liquide de refroidissement et l'huile de transmission dans la plage {{range}} pour préserver la fiabilité."
+          },
+          "suspensionCheck": {
+            "title": "Contrôle suspension et direction",
+            "details": "Vérifiez amortisseurs, silentblocs, direction et équilibrage des roues de {{make}} {{model}} à ce kilométrage."
+          },
+          "timingAndBelts": {
+            "title": "Courroies et gros entretien",
+            "details": "Au-delà de {{range}}, inspectez les courroies, les organes liés à la distribution et les points majeurs d'entretien de {{make}} {{model}}."
+          },
+          "batteryAndSuspension": {
+            "title": "Batterie et suspension",
+            "details": "À kilométrage élevé, testez la batterie et revoyez les points d'usure de suspension avant qu'ils n'affectent le confort ou le démarrage."
+          }
+        }
+      },
+      "noRecommendedOil": "Aucune huile recommandee disponible"
+    },
+    "store": {
+      "chip": "Store huiles",
+      "title": "Boutique huiles et entretien",
+      "subtitle": "Choisissez l'huile adaptée à votre voiture selon le modèle et le kilométrage, puis consultez le prix, le vendeur et la livraison en Algérie.",
+      "backRecommendations": "Retour aux recommandations",
+      "editCar": "Modifier la voiture",
+      "loading": "Chargement du store...",
+      "missingCar": "Ajoutez d'abord les informations de votre voiture pour recevoir les bonnes recommandations d'huile.",
+      "addCar": "Ajouter les infos →",
+      "yourCar": "Votre voiture :",
+      "recommendedTitle": "Huiles recommandées pour votre voiture",
+      "recommendedDescription": "Les produits sont classés selon la marque, le modèle et le kilométrage actuel.",
+      "productsFound": "produits correspondants",
+      "seller": "Vendeur",
+      "delivery": "Livraison",
+      "price": "Prix",
+      "addToCart": "Ajouter au panier",
+      "catalogTitle": "Toutes les huiles disponibles",
+      "viewCard": "Voir la fiche",
+      "cartTitle": "Panier",
+      "remove": "Retirer",
+      "qty": "Quantité",
+      "subtotal": "Sous-total",
+      "deliveryFee": "Frais de livraison",
+      "total": "Total",
+      "cartEmpty": "Votre panier est vide pour le moment.",
+      "checkoutTitle": "Finaliser la commande",
+      "fullName": "Nom complet",
+      "phone": "Téléphone",
+      "wilaya": "Wilaya",
+      "address": "Adresse complète",
+      "notes": "Notes supplémentaires",
+      "placeOrder": "Confirmer la commande",
+      "completeOrder": "Complétez les coordonnées client et l'adresse avant de confirmer la commande.",
+      "orderSuccess": "Votre commande a été enregistrée. Produits : {{count}} - montant total : {{total}}."
+    }
+  },
+  "mechanic": {
+    "dashboard": {
+      "chip": "Tableau mécanicien",
+      "title": "Contrôle total… ambiance dashboard 2026",
+      "subtitle": "Surveillez les demandes, priorisez, et gardez une expérience rapide et pro.",
+      "openRequests": "Ouvrir les demandes",
+      "newRequestsTitle": "Nouvelles demandes",
+      "newRequestsDesc": "Accepter/refuser rapidement avec distance et priorité claires.",
+      "newRequestsAction": "Ouvrir →",
+      "earningsTitle": "Revenus",
+      "earningsDesc": "Résumé quotidien/hebdo avec indicateurs de performance.",
+      "earningsAction": "Voir les revenus →",
+      "stats": {
+        "respK": "Temps de réponse",
+        "respV": "≤ 3 min",
+        "trustK": "Confiance",
+        "trustV": "4,9/5",
+        "todayK": "Aujourd’hui",
+        "todayV": "Prêt"
+      },
+      "quickSummary": "Résumé rapide",
+      "summary": {
+        "newRequests": "Nouvelles demandes",
+        "messages": "Messages",
+        "todayEarnings": "Revenus du jour"
+      },
+      "soon": "Bientôt : activer/désactiver les demandes + définir le rayon + planification automatique."
+    },
+    "requests": {
+      "chip": "Demandes",
+      "title": "Nouvelles demandes",
+      "subtitle": "UI MVP — bientôt : filtres distance + statut + ETA.",
+      "back": "Retour",
+      "accept": "Accepter",
+      "reject": "Refuser",
+      "sampleNotes": {
+        "tire": "Pneu arrière gauche…",
+        "battery": "La voiture ne démarre pas",
+        "towing": "Panne soudaine sur la route"
+      }
+    },
+    "earnings": {
+      "chip": "Analytics",
+      "title": "Revenus",
+      "subtitle": "UI MVP — bientôt : filtres par date + retraits + frais de plateforme.",
+      "back": "Retour",
+      "cards": {
+        "today": "Aujourd’hui",
+        "week": "Cette semaine",
+        "month": "Ce mois-ci",
+        "requests": "{{count}} demandes"
+      },
+      "latest": "Dernières opérations",
+      "when": {
+        "today": "Aujourd’hui",
+        "yesterday": "Hier",
+        "twoDays": "Avant-hier"
+      }
+    }
+  },
+  "whatsapp": {
+    "aria": "Contacter via WhatsApp",
+    "title": "WhatsApp"
+  },
+  "footer": {
+    "about": "Sayarati vous aide à suivre votre voiture et réserver des services rapidement et clairement.",
+    "linksTitle": "Liens",
+    "services": "Services",
+    "faq": "FAQ",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d’utilisation",
+    "contactTitle": "Contact",
+    "email": "Email :",
+    "phone": "Téléphone :",
+    "rights": "© {{year}} Sayarati. Tous droits réservés.",
+    "responsive": "Conçu pour mobile, tablette et ordinateur."
+  }
+}
