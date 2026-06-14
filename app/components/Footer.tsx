@@ -11,7 +11,12 @@ export default function Footer() {
   const pathname = usePathname();
   const year = new Date().getUTCFullYear();
 
-  if (pathname === "/" || pathname === "/landing") {
+  if (
+    pathname === "/" ||
+    pathname === "/landing" ||
+    pathname === "/choose-role" ||
+    pathname.startsWith("/auth/")
+  ) {
     return null;
   }
 
