@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 import AppChrome from "./components/AppChrome";
+import Footer from "./components/Footer";
 import I18nProvider from "./i18n/I18nProvider";
 import { getLanguageDir, LANGUAGE_COOKIE, normalizeAppLanguage } from "./i18n/shared";
 import ThemeProvider from "./theme/ThemeProvider";
@@ -57,6 +58,7 @@ export default async function RootLayout({
             <main id="main" className="flex-1">
               {children}
             </main>
+            <Footer />
           </I18nProvider>
         </ThemeProvider>
       </body>

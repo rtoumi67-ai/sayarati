@@ -6,9 +6,6 @@ import { usePathname } from "next/navigation";
 const Header = dynamic(() => import("./Header"), {
   loading: () => null,
 });
-const Footer = dynamic(() => import("./Footer"), {
-  loading: () => null,
-});
 const MouseGlow = dynamic(() => import("./MouseGlow"), {
   loading: () => null,
 });
@@ -34,7 +31,6 @@ export default function AppChrome() {
     <>
       {marketing ? <MouseGlow /> : null}
       {!marketing ? <Header /> : null}
-      {!marketing ? <Footer /> : null}
       <WhatsAppFloating />
     </>
   );
