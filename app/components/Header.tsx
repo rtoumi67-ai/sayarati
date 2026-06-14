@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import type { TFunction } from "i18next";
-import { useTranslation } from "react-i18next";
 import { ArrowRight, Menu, Sparkles, X } from "lucide-react";
 import { getRole, isAuthed, type Role } from "./auth";
 import { SITE } from "./site";
@@ -14,8 +12,52 @@ import ThemeSwitcher from "./ThemeSwitcher";
 type NavItem = { href: string; label: string };
 type AuthState = { role: Role | null; authed: boolean };
 
-function roleLabel(role: Role, t: TFunction) {
-  return role === "customer" ? t("roles.customer") : t("roles.mechanic");
+const HEADER_COPY = {
+  navigation: "التنقل",
+  menu: "القائمة",
+  openMenu: "فتح القائمة",
+  closeMenu: "إغلاق القائمة",
+  skipToContent: "الانتقال إلى المحتوى",
+  startNow: "ابدأ الآن",
+  logout: "تسجيل الخروج",
+  customer: "مالك سيارة",
+  mechanic: "ميكانيكي",
+  customerDashboard: "لوحتي",
+  mechanicDashboard: "لوحة الميكانيكي",
+  requests: "الطلبات",
+  earnings: "الأرباح",
+  nearbyMechanics: "الميكانيكيون القريبون",
+  requestService: "طلب خدمة",
+} as const;
+
+const STATIC_NAV_ITEMS: NavItem[] = [
+  { href: "/choose-role", label: "اختيار الدور" },
+  { href: "/auth/login", label: "تسجيل الدخول" },
+  { href: "/auth/register", label: "إنشاء حساب" },
+];
+
+function roleLabel(role: Role) {
+  return role === "customer" ? HEADER_COPY.customer : HEADER_COPY.mechanic;
+}
+
+function getRoleShortcuts(role: Role | null): NavItem[] {
+  if (role === "mechanic") {
+    return [
+      { href: "/mechanic", label: HEADER_COPY.mechanicDashboard },
+      { href: "/mechanic/requests", label: HEADER_COPY.requests },
+      { href: "/mechanic/earnings", label: HEADER_COPY.earnings },
+    ];
+  }
+
+  if (role === "customer") {
+    return [
+      { href: "/customer", label: HEADER_COPY.customerDashboard },
+      { href: "/customer/find", label: HEADER_COPY.nearbyMechanics },
+      { href: "/customer/request", label: HEADER_COPY.requestService },
+    ];
+  }
+
+  return [];
 }
 
 function readAuthState(): AuthState {
@@ -25,7 +67,6 @@ function readAuthState(): AuthState {
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const { t } = useTranslation();
 
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
@@ -33,6 +74,10 @@ export default function Header() {
 
   const effectiveRole = mounted ? role : null;
   const effectiveAuthed = mounted ? authed : false;
+  const roleShortcuts = useMemo(
+    () => (effectiveAuthed ? getRoleShortcuts(effectiveRole) : []),
+    [effectiveAuthed, effectiveRole],
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -71,30 +116,6 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  const items: NavItem[] = useMemo(() => {
-    if (!effectiveAuthed) {
-      return [
-        { href: "/choose-role", label: t("nav.chooseRole") },
-        { href: "/auth/login", label: t("nav.login") },
-        { href: "/auth/register", label: t("nav.register") },
-      ];
-    }
-
-    if (effectiveRole === "mechanic") {
-      return [
-        { href: "/mechanic", label: t("nav.dashboard") },
-        { href: "/mechanic/requests", label: t("nav.requests") },
-        { href: "/mechanic/earnings", label: t("nav.earnings") },
-      ];
-    }
-
-    return [
-      { href: "/customer", label: t("nav.dashboard") },
-      { href: "/customer/find", label: t("nav.nearbyMechanic") },
-      { href: "/customer/request", label: t("nav.requestService") },
-    ];
-  }, [effectiveAuthed, effectiveRole, t]);
-
   if (pathname === "/" || pathname === "/landing") {
     return null;
   }
@@ -105,7 +126,7 @@ export default function Header() {
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-2xl focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-foreground focus:ring-1 focus:ring-border"
       >
-        Skip to content
+        {HEADER_COPY.skipToContent}
       </a>
 
       <div className="container-app py-4">
@@ -124,8 +145,8 @@ export default function Header() {
               </span>
             </Link>
 
-            <nav className="hidden items-center gap-1 md:flex" aria-label={t("nav.navigation")}>
-            {items.map((it) => (
+            <nav className="hidden items-center gap-1 md:flex" aria-label={HEADER_COPY.navigation}>
+            {STATIC_NAV_ITEMS.map((it) => (
               <Link
                 key={it.href}
                 href={it.href}
@@ -142,13 +163,28 @@ export default function Header() {
             </nav>
 
             <div className="hidden items-center gap-2 md:flex">
+              {roleShortcuts.map((it) => (
+                <Link
+                  key={it.href}
+                  href={it.href}
+                  className={[
+                    "rounded-full px-4 py-2 text-sm font-medium transition duration-200 ease-out",
+                    pathname?.startsWith(it.href)
+                      ? "bg-primary/10 text-primary ring-1 ring-primary/20"
+                      : "text-muted hover:bg-card-2 hover:text-foreground",
+                  ].join(" ")}
+                >
+                  {it.label}
+                </Link>
+              ))}
+
               <LanguageSwitcher />
               <ThemeSwitcher />
 
               {!effectiveAuthed ? (
                 <Link href="/choose-role" className="btn-primary h-10 gap-2 px-4 text-sm">
                   <Sparkles className="h-4 w-4" aria-hidden />
-                  {t("nav.startNow")}
+                  {HEADER_COPY.startNow}
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               ) : (
@@ -159,8 +195,8 @@ export default function Header() {
                     router.replace("/choose-role");
                   }}
                 >
-                  {t("nav.logout")}
-                  {effectiveRole ? ` (${roleLabel(effectiveRole, t)})` : ""}
+                  {HEADER_COPY.logout}
+                  {effectiveRole ? ` (${roleLabel(effectiveRole)})` : ""}
                 </button>
               )}
             </div>
@@ -168,7 +204,7 @@ export default function Header() {
             <button
               type="button"
               className="btn-secondary h-10 w-10 rounded-full md:hidden"
-              aria-label={t("nav.openMenu")}
+              aria-label={open ? HEADER_COPY.closeMenu : HEADER_COPY.openMenu}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
             >
@@ -190,13 +226,29 @@ export default function Header() {
           <div className="fixed left-0 right-0 top-16 z-50 md:hidden">
             <div className="container-app py-3">
               <div className="rounded-[28px] border border-border/70 bg-card/88 p-4 shadow-[0_28px_80px_-44px_var(--shadow-ambient-strong)] backdrop-blur-2xl">
-                <nav className="flex flex-col gap-2" aria-label={t("nav.menu")}>
+                <nav className="flex flex-col gap-2" aria-label={HEADER_COPY.menu}>
                   <div className="mb-1 flex items-center justify-between">
                     <LanguageSwitcher />
                     <ThemeSwitcher />
                   </div>
 
-                  {items.map((it) => (
+                  {STATIC_NAV_ITEMS.map((it) => (
+                    <Link
+                      key={it.href}
+                      href={it.href}
+                      className={[
+                        "rounded-2xl px-4 py-3 text-sm font-semibold transition duration-200 ease-out",
+                        pathname?.startsWith(it.href)
+                          ? "bg-primary/10 text-primary ring-1 ring-primary/20"
+                          : "text-muted hover:bg-card-2 hover:text-foreground",
+                      ].join(" ")}
+                      onClick={() => setOpen(false)}
+                    >
+                      {it.label}
+                    </Link>
+                  ))}
+
+                  {roleShortcuts.map((it) => (
                     <Link
                       key={it.href}
                       href={it.href}
@@ -219,7 +271,7 @@ export default function Header() {
                       onClick={() => setOpen(false)}
                     >
                       <Sparkles className="h-4 w-4" aria-hidden />
-                      {t("nav.startNow")}
+                      {HEADER_COPY.startNow}
                       <ArrowRight className="h-4 w-4" aria-hidden />
                     </Link>
                   ) : (
@@ -231,7 +283,7 @@ export default function Header() {
                         router.replace("/choose-role");
                       }}
                     >
-                      {t("nav.logout")}
+                      {HEADER_COPY.logout}
                     </button>
                   )}
                 </nav>
